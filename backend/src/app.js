@@ -1,8 +1,9 @@
 const express = require('express');
-const {mealsRouter} = require('./routes');
+const routes = require('./routes');
 
 const app = express();
 
-app.use('/meals', mealsRouter)
+app.use('/meals', routes.mealsRouter);
+app.use('/drinks', routes.drinksRouter);
 
 module.exports = app;
