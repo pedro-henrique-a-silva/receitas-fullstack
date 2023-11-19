@@ -14,11 +14,11 @@ const getAllCategories = async () => {
 
 const findByCategory = async (categoryName) => {
   const [filtered] = await connection.execute(`
-  SELECT * FROM meals m
-  INNER JOIN meals_categories mc 
-  ON m.id_category = mc.id
-  WHERE category_name = ?`,
-  [categoryName]
+    SELECT * FROM meals m
+    INNER JOIN meals_categories mc 
+    ON m.id_category = mc.id
+    WHERE category_name = ?`,
+    [categoryName]
   );
 
   return camelize(filtered);
