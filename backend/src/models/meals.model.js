@@ -25,7 +25,13 @@ const findByCategory = async (categoryName) => {
 }
 
 const findById = async (mealId) => {
-  const [[meal]] = await connection.execute(`SELECT * FROM meals WHERE id_meal = ?`, [mealId])
+  const [[meal]] = await connection.execute(`
+  SELECT * FROM meals m
+  INNER JOIN meals_categories mc 
+  ON m.id_category = mc.id
+  WHERE id_meal = ?
+  `, [mealId])
+
   return camelize(meal);
 } 
 

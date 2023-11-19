@@ -14,9 +14,9 @@ mealsRouter.get('/all/categories', async (req, res) => {
   res.status(200).json(allCategories);
 })
 
-mealsRouter.get('/category/:categoryId', async (req, res) => {
-  const { categoryId } = req.params;
-  const filteredMeals = await mealsModel.findByCategory(categoryId);
+mealsRouter.get('/category/:categoryName', async (req, res) => {
+  const { categoryName } = req.params;
+  const filteredMeals = await mealsModel.findByCategory(categoryName);
 
   res.status(200).json(filteredMeals);
 })
@@ -24,7 +24,6 @@ mealsRouter.get('/category/:categoryId', async (req, res) => {
 mealsRouter.get('/:mealsId', async (req, res) => {
   const { mealsId } = req.params;
   const meal = await mealsModel.findById(mealsId);
-
   res.status(200).json(meal);
 })
 
