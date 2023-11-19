@@ -11,7 +11,20 @@ const getAllCategories = async () => {
   return camelize(categories);
 }
 
+const findByCategory = async (categoryName) => {
+  const [filtered] = await connection.execute(`
+    SELECT * FROM drinks m
+    INNER JOIN drinks_categories mc 
+    ON m.id_category = mc.id
+    WHERE category_name = ?`,
+    [categoryName]
+  );
+
+  return camelize(filtered);
+}
+
 module.exports = {
   getAll,
   getAllCategories,
+  findByCategory,
 }
