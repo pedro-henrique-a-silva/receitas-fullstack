@@ -976,6 +976,54 @@ const allDrinksMockFromDB = [
   }
 ]
 
+const allDrinksCategoriesMockFromDB = [
+  {
+    "id": 1,
+    "category_name": "Ordinary Drink"
+  },
+  {
+    "id": 2,
+    "category_name": "Cocktail"
+  },
+  {
+    "id": 3,
+    "category_name": "Shake"
+  },
+  {
+    "id": 4,
+    "category_name": "Other / Unknown"
+  },
+  {
+    "id": 5,
+    "category_name": "Cocoa"
+  },
+  {
+    "id": 6,
+    "category_name": "Shot"
+  },
+  {
+    "id": 7,
+    "category_name": "Coffee / Tea"
+  },
+  {
+    "id": 8,
+    "category_name": "Homemade Liqueur"
+  },
+  {
+    "id": 9,
+    "category_name": "Punch / Party Drink"
+  },
+  {
+    "id": 10,
+    "category_name": "Beer"
+  },
+  {
+    "id": 11,
+    "category_name": "Soft Drink"
+  }
+]
+
 module.exports = {
   allDrinksMockFromDB,
+  allDrinksCategoriesMockFromDB,
 }
