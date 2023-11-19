@@ -4,7 +4,8 @@ const connection = require('../../../src/models/connection');
 const {
   allDrinksMockFromDB,
   allDrinksCategoriesMockFromDB,
-  mealsFilteredByCategoryFromDB
+  drinksFilteredByCategoryFromDB,
+  drinkFindByIdFromDB
 } = require('./mocks/drinks.mock');
 const {drinksModel} = require('../../../src/models/index')
 
@@ -26,11 +27,20 @@ describe('Testando Bebidas - MODEL', () => {
   })
 
   it('Testa filtro por categória', async () => {
-    sinon.stub(connection, 'execute').resolves([mealsFilteredByCategoryFromDB])
+    sinon.stub(connection, 'execute').resolves([drinksFilteredByCategoryFromDB])
     const drinksFiltered = await drinksModel.findByCategory('Beer');
 
     expect(drinksFiltered).to.be.an('array');
     expect(drinksFiltered).to.have.lengthOf(1);
+  })
+
+  it('Teste pesquisa por ID de bebida', async () => {
+    sinon.stub(connection, 'execute').resolves([[drinkFindByIdFromDB]])
+
+    const drinkFiltered = await drinksModel.findById(13128);
+
+    expect(drinkFiltered.strDrink).to.be.equal('Diesel');
+    expect(drinkFiltered.idCategory).to.be.equal(10);
   })
 
   afterEach(() => {
