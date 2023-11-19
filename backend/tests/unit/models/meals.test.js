@@ -4,7 +4,8 @@ const connection = require('../../../src/models/connection');
 const {
   allMealsMockFromDB, 
   allMealsCategoriesFromDB,
-  mealsFilteredByCategoryFromDB
+  mealsFilteredByCategoryFromDB,
+  mealFindByIdFromDB
 } = require('./mocks/meals.mock');
 const {mealsModel} = require('../../../src/models/index')
 
@@ -30,6 +31,15 @@ describe('Testando Meals - MODEL', () => {
     const mealsFiltered = await mealsModel.findByCategory('Beef');
     expect(mealsFiltered).to.be.an('array');
     expect(mealsFiltered).to.have.lengthOf(3);
+  })
+  
+  it('Teste pesquisa por ID de comida', async () => {
+    sinon.stub(connection, 'execute').resolves([[mealFindByIdFromDB]])
+
+    const mealFiltered = await mealsModel.findById(52769);
+
+    expect(mealFiltered.strMeal).to.be.equal('Kapsalon');
+    expect(mealFiltered.idCategory).to.be.equal(6);
   })
 
   afterEach(() => {
