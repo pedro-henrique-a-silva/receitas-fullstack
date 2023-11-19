@@ -8,7 +8,7 @@ const {
 const {mealsModel} = require('../../../src/models/index')
 
 describe('Testando Meals - MODEL', () => {
-  it('Testando busca de todas as comidas', async () => {
+  it('Testando busca de todas as receitas comidas', async () => {
     sinon.stub(connection, 'execute').resolves([allMealsMockFromDB])
     const allMeals = await mealsModel.getAll();
 

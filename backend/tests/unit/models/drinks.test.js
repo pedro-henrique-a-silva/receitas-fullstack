@@ -5,7 +5,7 @@ const {allDrinksMockFromDB} = require('./mocks/drinks.mock');
 const {drinksModel} = require('../../../src/models/index')
 
 describe('Testando Bebidas - MODEL', () => {
-  it('Testando busca de todas as bebidas', async () => {
+  it('Testando busca de todas as receitas de bebidas', async () => {
     sinon.stub(connection, 'execute').resolves([allDrinksMockFromDB])
     const allDrinks = await drinksModel.getAll();
 
