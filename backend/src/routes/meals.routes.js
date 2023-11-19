@@ -8,5 +8,11 @@ mealsRouter.get('/all', async (req, res) => {
   res.status(200).json(allMeals);
 })
 
+mealsRouter.get('/all/categories', async (req, res) => {
+  const allCategories = await mealsModel.getAllCategories();
+
+  res.status(200).json(allCategories);
+})
+
 
 module.exports = mealsRouter;
