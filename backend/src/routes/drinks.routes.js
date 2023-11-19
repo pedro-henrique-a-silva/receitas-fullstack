@@ -21,4 +21,11 @@ drinksRouter.get('/category/:categoryId', async (req, res) => {
   res.status(200).json(filteredDrinks);
 })
 
+drinksRouter.get('/:drinksId', async (req, res) => {
+  const { drinksId } = req.params;
+  const drink = await drinksModel.findById(drinksId);
+
+  res.status(200).json(drink);
+})
+
 module.exports = drinksRouter;
