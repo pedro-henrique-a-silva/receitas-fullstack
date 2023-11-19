@@ -1276,6 +1276,66 @@ const allMealsMockFromDB = [
   }
 ]
 
+const allMealsCategoriesFromDB = [
+  {
+    "id": 1,
+    "category_name": "Beef"
+  },
+  {
+    "id": 2,
+    "category_name": "Breakfast"
+  },
+  {
+    "id": 3,
+    "category_name": "Chicken"
+  },
+  {
+    "id": 4,
+    "category_name": "Dessert"
+  },
+  {
+    "id": 5,
+    "category_name": "Goat"
+  },
+  {
+    "id": 6,
+    "category_name": "Lamb"
+  },
+  {
+    "id": 7,
+    "category_name": "Miscellaneous"
+  },
+  {
+    "id": 8,
+    "category_name": "Pasta"
+  },
+  {
+    "id": 9,
+    "category_name": "Pork"
+  },
+  {
+    "id": 10,
+    "category_name": "Seafood"
+  },
+  {
+    "id": 11,
+    "category_name": "Side"
+  },
+  {
+    "id": 12,
+    "category_name": "Starter"
+  },
+  {
+    "id": 13,
+    "category_name": "Vegan"
+  },
+  {
+    "id": 14,
+    "category_name": "Vegetarian"
+  }
+]
+
 module.exports = {
   allMealsMockFromDB,
+  allMealsCategoriesFromDB,
 }
