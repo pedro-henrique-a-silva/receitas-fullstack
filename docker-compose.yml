@@ -1,6 +1,20 @@
 version: '3'
 
 services:
+  frontend:
+    image: node:18
+    container_name: frontend-receita
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./frontend/:/app
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
   backend:
     image: node:18
     container_name: api-receita
