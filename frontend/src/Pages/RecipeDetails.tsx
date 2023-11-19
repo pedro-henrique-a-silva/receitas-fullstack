@@ -95,7 +95,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
     const getDetails = async () => {
       const details = await fetchDetails(mealOrDrink, recipeID);
       if (details) {
-        setRecipeDetails(details[0]);
+        setRecipeDetails(details);
       }
     };
     getDetails();

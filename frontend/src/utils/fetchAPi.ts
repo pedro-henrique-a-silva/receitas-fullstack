@@ -23,6 +23,6 @@ export const fetchApi = async (url: string) => {
 };
 
 export const fetchDetails = async (mealOrDrink: string, recipeID: string | undefined) => {
-  const url = `${baseURL[mealOrDrink]}lookup.php?i=${recipeID}`;
+  const url = `http://localhost:3001/${mealOrDrink}/${recipeID}`;
   return fetchApi(url);
 };

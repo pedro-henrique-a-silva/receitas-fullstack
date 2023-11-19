@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Dot } from '@phosphor-icons/react';
 import { ButtonFixed, DescriptionContainer } from './RecipeInProgressStyled';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
@@ -141,7 +140,7 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     const getDetails = async () => {
       const details = await fetchDetails(mealOrDrink, recipeID);
       if (details) {
-        setRecipeDetails(details[0]);
+        setRecipeDetails(details);
       }
     };
 

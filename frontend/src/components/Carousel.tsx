@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {Container} from './CarouselStyle';
-import { fetchAllOrByCategory } from '../utils/fetchAPi';
+import { fetchApi } from '../utils/fetchAPi';
 
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
@@ -23,16 +23,15 @@ function Carousel(props: CarouselProps) {
   useEffect(() => {
     const getData = async () => {
       const mealOrDrinkRecomend = mealOrDrink === 'meals' ? 'drinks' : 'meals';
-      const recomendData = await fetchAllOrByCategory(mealOrDrinkRecomend, '');
+      const recomendData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
       setRecomendations(recomendData.slice(0, 6));
     };
     getData();
-  });
+  }, []);
 
   return (
     <Container>
       <Swiper
-        // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={50}
         slidesPerView={1}

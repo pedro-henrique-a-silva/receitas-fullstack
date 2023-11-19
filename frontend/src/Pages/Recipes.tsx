@@ -38,9 +38,16 @@ function Recipes({ mealOrDrink }: RecipesProps) {
 
   useEffect(() => {
     const getRecipes = async () => {
-      const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
-      if (recipesData) {
-        updateRecipes(recipesData.slice(0, 12));
+      if (selectedCategory) {
+        const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/category/${selectedCategory}`);
+        if (recipesData.length !== 0) {
+          updateRecipes(recipesData.slice(0, 12));
+        }
+      } else {
+        const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
+        if (recipesData) {
+          updateRecipes(recipesData.slice(0, 12));
+        }
       }
     };
 

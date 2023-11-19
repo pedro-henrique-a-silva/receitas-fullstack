@@ -34,10 +34,8 @@ function RecipeCover(props: RecipeCoverProps) {
         data-testid="recipe-category"
       >
         {
-          (mealOrDrink === 'meals')
-            ? recipeDetails?.strCategory
-            : recipeDetails?.strAlcoholic
-          }
+         recipeDetails?.categoryName
+        }
 
       </h3>
       <SocialButtons>
