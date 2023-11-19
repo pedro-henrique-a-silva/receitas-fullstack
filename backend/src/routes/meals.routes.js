@@ -21,6 +21,13 @@ mealsRouter.get('/category/:categoryId', async (req, res) => {
   res.status(200).json(filteredMeals);
 })
 
+mealsRouter.get('/:mealsId', async (req, res) => {
+  const { mealsId } = req.params;
+  const meal = await mealsModel.findById(mealsId);
+
+  res.status(200).json(meal);
+})
+
 
 
 module.exports = mealsRouter;
