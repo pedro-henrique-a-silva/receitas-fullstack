@@ -6,6 +6,12 @@ const getAll = async () => {
   return meals;
 }
 
+const getAllCategories = async () => {
+  const [categories] = await connection.execute('SELECT * FROM meals_categories');
+  return categories
+}
+
 module.exports = {
   getAll,
+  getAllCategories,
 }
