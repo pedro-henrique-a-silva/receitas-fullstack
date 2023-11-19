@@ -23,4 +23,7 @@ export default defineConfig({
       provider: 'c8'
     }
   },
+  server: {
+    host: true
+  }
 })
