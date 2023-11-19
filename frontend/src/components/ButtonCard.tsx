@@ -17,10 +17,10 @@ function ButtonCard({ onCategorySelected, categories }: ButtonCardProps) {
           key={ index }
           size="small"
           variant="outlined"
-          data-testid={ `${category.strCategory}-category-filter` }
-          onClick={ () => onCategorySelected(category.strCategory) }
+          data-testid={ `${category.categoryName}-category-filter` }
+          onClick={ () => onCategorySelected(category.categoryName) }
         >
-          {category.strCategory}
+          {category.categoryName}
         </ButtonStyled>
       ))}
       <ButtonStyled

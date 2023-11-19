@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import ButtonCard from '../components/ButtonCard';
 import Header from '../components/Header';
-import { fetchAllOrByCategory, fetchCategories } from '../utils/fetchAPi';
+import { fetchApi } from '../utils/fetchAPi';
 import Footer from './Footer';
 import RecipesContext from '../context/contextRecipes';
 import { Recipe } from '../types';
@@ -38,7 +38,7 @@ function Recipes({ mealOrDrink }: RecipesProps) {
 
   useEffect(() => {
     const getRecipes = async () => {
-      const recipesData = await fetchAllOrByCategory(mealOrDrink, selectedCategory);
+      const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
       if (recipesData) {
         updateRecipes(recipesData.slice(0, 12));
       }
@@ -49,7 +49,7 @@ function Recipes({ mealOrDrink }: RecipesProps) {
 
   useEffect(() => {
     const getCategorys = async () => {
-      const categorysData = await fetchCategories(mealOrDrink);
+      const categorysData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all/categories`);
       if (categorysData) {
         setCategorys(categorysData.slice(0, 5));
       }
