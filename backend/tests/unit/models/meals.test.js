@@ -3,7 +3,8 @@ const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const {
   allMealsMockFromDB, 
-  allMealsCategoriesFromDB
+  allMealsCategoriesFromDB,
+  mealsFilteredByCategoryFromDB
 } = require('./mocks/meals.mock');
 const {mealsModel} = require('../../../src/models/index')
 
@@ -22,6 +23,13 @@ describe('Testando Meals - MODEL', () => {
 
     expect(allMeals).to.be.an('array');
     expect(allMeals).to.have.lengthOf(14);
+  })
+
+  it('Testa filtro por categória', async () => {
+    sinon.stub(connection, 'execute').resolves([mealsFilteredByCategoryFromDB])
+    const mealsFiltered = await mealsModel.findByCategory('Beef');
+    expect(mealsFiltered).to.be.an('array');
+    expect(mealsFiltered).to.have.lengthOf(3);
   })
 
   afterEach(() => {
