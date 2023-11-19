@@ -23,8 +23,14 @@ const findByCategory = async (categoryName) => {
   return camelize(filtered);
 }
 
+const findById = async (drinkId) => {
+  const [[drink]] = await connection.execute(`SELECT * FROM drinks WHERE id_drink = ?`, [drinkId])
+  return camelize(drink);
+} 
+
 module.exports = {
   getAll,
   getAllCategories,
   findByCategory,
+  findById
 }
