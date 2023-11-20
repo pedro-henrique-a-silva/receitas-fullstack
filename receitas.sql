@@ -4,6 +4,17 @@ USE `receitas_db`;
 
 DROP TABLE IF EXISTS `meals_categories`;
 
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(200) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+INSERT INTO `users` VALUES 
+(1,'email@email.com', '1234567890'),
+(2,'email2@email.com', '1234567890');
+
 CREATE TABLE `meals_categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_name` varchar(100) NOT NULL,
@@ -176,3 +187,20 @@ INSERT INTO `meals` VALUES
 (53028,'Shawarma',3,'Egyptian','Combine the marinade ingredients in a large ziplock bag (or bowl).\r\nAdd the chicken and use your hands to make sure each piece is coated. If using a ziplock bag, I find it convenient to close the bag then massage the bag to disperse the rub all over each chicken piece.\r\nMarinate overnight or up to 24 hours.\r\nCombine the Yoghurt Sauce ingredients in a bowl and mix. Cover and put in the fridge until required (it will last for 3 days in the fridge).\r\nHeat grill/BBQ (or large heavy based pan on stove) on medium high. You should not need to oil it because the marinade has oil in it and also thigh fillets have fat. But if you are worried then oil your hotplate/grill. (See notes for baking)\r\nPlace chicken on the grill and cook the first side for 4 to 5 minutes until nicely charred, then turn and cook the other side for 3 to 4 minutes (the 2nd side takes less time).\r\nRemove chicken from the grill and cover loosely with foil. Set aside to rest for 5 minutes.\r\nTO SERVE\r\nSlice chicken and pile onto platter alongside flatbreads, Salad and the Yoghurt Sauce.\r\nTo make a wrap, get a piece of flatbread and smear with Yoghurt Sauce. Top with a bit of lettuce and tomato and Chicken Shawarma. Roll up and enjoy!','https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg',NULL,'https://www.youtube.com/watch?v=3lxUIeKDgic','Chicken Thighs','Coriander','Cumin','Cardamom','Cayenne Pepper','Paprika','Lemon Juice','Olive Oil','Greek Yogurt','Garlic Clove','Cumin','Lemon Juice','Lettuce','Tomato','Pita Bread',NULL,NULL,NULL,NULL,NULL,'1 kg','1 tbs','1 tbs','1 tbs','1 tsp ','2 tsp','2 tbs','3 tbs','1 cup ','1','1 tsp ','Splash','Sliced','Sliced','6',NULL,NULL,NULL,NULL,NULL,'https://www.recipetineats.com/chicken-sharwama-middle-eastern/'),
 (53060,'Burek',11,'Croatian','Fry the finely chopped onions and minced meat in oil. Add the salt and pepper. Grease a round baking tray and put a layer of pastry in it. Cover with a thin layer of filling and cover this with another layer of filo pastry which must be well coated in oil. Put another layer of filling and cover with pastry. When you have five or six layers, cover with filo pastry, bake at 200ºC/392ºF for half an hour and cut in quarters and serve.','https://www.themealdb.com/images/media/meals/tkxquw1628771028.jpg','Streetfood, Onthego','https://www.youtube.com/watch?v=YsJXZwE5pdY','Filo Pastry','Minced Beef','Onion','Oil','Salt','Pepper',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1 Packet','150g','150g','40g','Dash','Dash',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'https://www.visit-croatia.co.uk/croatian-cuisine/croatian-recipes/'),(53065,'Sushi',10,'Japanese','STEP 1\r\nTO MAKE SUSHI ROLLS: Pat out some rice. Lay a nori sheet on the mat, shiny-side down. Dip your hands in the vinegared water, then pat handfuls of rice on top in a 1cm thick layer, leaving the furthest edge from you clear.\r\n\r\nSTEP 2\r\nSpread over some Japanese mayonnaise. Use a spoon to spread out a thin layer of mayonnaise down the middle of the rice.\r\n\r\nSTEP 3\r\nAdd the filling. Get your child to top the mayonnaise with a line of their favourite fillings – here we`ve used tuna and cucumber.\r\n\r\nSTEP 4\r\nRoll it up. Lift the edge of the mat over the rice, applying a little pressure to keep everything in a tight roll.\r\n\r\nSTEP 5\r\nStick down the sides like a stamp. When you get to the edge without any rice, brush with a little water and continue to roll into a tight roll.\r\n\r\nSTEP 6\r\nWrap in cling film. Remove the mat and roll tightly in cling film before a grown-up cuts the sushi into thick slices, then unravel the cling film.\r\n\r\nSTEP 7\r\nTO MAKE PRESSED SUSHI: Layer over some smoked salmon. Line a loaf tin with cling film, then place a thin layer of smoked salmon inside on top of the cling film.\r\n\r\nSTEP 8\r\nCover with rice and press down. Press about 3cm of rice over the fish, fold the cling film over and press down as much as you can, using another tin if you have one.\r\n\r\nSTEP 9\r\nTip it out like a sandcastle. Turn block of sushi onto a chopping board. Get a grown-up to cut into fingers, then remove the cling film.\r\n\r\nSTEP 10\r\nTO MAKE SUSHI BALLS: Choose your topping. Get a small square of cling film and place a topping, like half a prawn or a small piece of smoked salmon, on it. Use damp hands to roll walnut-sized balls of rice and place on the topping.\r\n\r\nSTEP 11\r\nMake into tight balls. Bring the corners of the cling film together and tighten into balls by twisting it up, then unwrap and serve.','https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',NULL,'https://www.youtube.com/watch?v=ub68OxEypaY','Sushi Rice','Rice wine','Caster Sugar','Mayonnaise','Rice wine','Soy Sauce','Cucumber',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'300ml ','100ml','2 tbs','3 tbs','1 tbs','1 tbs','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'https://www.bbcgoodfood.com/recipes/simple-sushi'),
 (53069,'Bistek',1,'Filipino','0.	Marinate beef in soy sauce, lemon (or calamansi), and ground black pepper for at least 1 hour. Note: marinate overnight for best result\r\n1.	Heat the cooking oil in a pan then pan-fry half of the onions until the texture becomes soft. Set aside\r\n2.	Drain the marinade from the beef. Set it aside. Pan-fry the beef on the same pan where the onions were fried for 1 minute per side. Remove from the pan. Set aside\r\n3.	Add more oil if needed. Saute garlic and remaining raw onions until onion softens.\r\n4.	Pour the remaining marinade and water. Bring to a boil.\r\n5.	Add beef. Cover the pan and simmer until the meat is tender. Note: Add water as needed.\r\n6.	Season with ground black pepper and salt as needed. Top with pan-fried onions.\r\n7.	Transfer to a serving plate. Serve hot. Share and Enjoy!\r\n','https://www.themealdb.com/images/media/meals/4pqimk1683207418.jpg',NULL,'https://www.youtube.com/watch?v=xOQON5_S7as','Beef','Soy Sauce','Lemon','Garlic','Onion','Olive Oil','Water','Salt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1 lb','5 tablespoons','1','3 cloves','3 parts ','4 tbs','1 cup ','1 pinch',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'https://panlasangpinoy.com/bistek-tagalog-beefsteak-recipe/');
+
+
+CREATE TABLE `favorites` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `id_meal` int,
+  `id_drink` int,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `id_meal` FOREIGN KEY (`id_meal`) REFERENCES `meals` (`id_meal`),
+  CONSTRAINT `id_drink` FOREIGN KEY (`id_drink`) REFERENCES `drinks` (`id_drink`)
+);
+
+INSERT INTO `favorites` VALUES 
+(1, 1, 52769, null),
+(2, 1, null, 12450),
+(3, 2, 52887, null),
+(4, 2, null, 13332);
