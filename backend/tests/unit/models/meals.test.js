@@ -9,8 +9,8 @@ const {
 } = require('./mocks/meals.mock');
 const {mealsModel} = require('../../../src/models/index')
 
-describe('Testando Meals - MODEL', () => {
-  it('Testando busca de todas as receitas comidas', async () => {
+describe('Testando Meals - MODEL', function() {
+  it('Testando busca de todas as receitas comidas', async function() {
     sinon.stub(connection, 'execute').resolves([allMealsMockFromDB])
     const allMeals = await mealsModel.getAll();
 
@@ -26,14 +26,14 @@ describe('Testando Meals - MODEL', () => {
     expect(allMeals).to.have.lengthOf(14);
   })
 
-  it('Testa filtro por categória', async () => {
+  it('Testa filtro por categória', async function() {
     sinon.stub(connection, 'execute').resolves([mealsFilteredByCategoryFromDB])
     const mealsFiltered = await mealsModel.findByCategory('Beef');
     expect(mealsFiltered).to.be.an('array');
     expect(mealsFiltered).to.have.lengthOf(3);
   })
   
-  it('Teste pesquisa por ID de comida', async () => {
+  it('Teste pesquisa por ID de comida', async function() {
     sinon.stub(connection, 'execute').resolves([[mealFindByIdFromDB]])
 
     const mealFiltered = await mealsModel.findById(52769);

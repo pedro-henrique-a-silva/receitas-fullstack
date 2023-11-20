@@ -9,7 +9,7 @@ const {
 } = require('./mocks/drinks.mock');
 const {drinksModel} = require('../../../src/models/index')
 
-describe('Testando Bebidas - MODEL', () => {
+describe('Testando Bebidas - MODEL', function() {
   it('Testando busca de todas as receitas de bebidas', async () => {
     sinon.stub(connection, 'execute').resolves([allDrinksMockFromDB])
     const allDrinks = await drinksModel.getAll();
@@ -18,7 +18,7 @@ describe('Testando Bebidas - MODEL', () => {
     expect(allDrinks).to.have.lengthOf(25);
   })
 
-  it('Testando busca de todas as categórias de receitas de bebidas', async () => {
+  it('Testando busca de todas as categórias de receitas de bebidas', async function() {
     sinon.stub(connection, 'execute').resolves([allDrinksCategoriesMockFromDB])
     const allDrinksCategories = await drinksModel.getAllCategories();
 
@@ -26,7 +26,7 @@ describe('Testando Bebidas - MODEL', () => {
     expect(allDrinksCategories).to.have.lengthOf(11);
   })
 
-  it('Testa filtro por categória', async () => {
+  it('Testa filtro por categória', async function() {
     sinon.stub(connection, 'execute').resolves([drinksFilteredByCategoryFromDB])
     const drinksFiltered = await drinksModel.findByCategory('Beer');
 
@@ -34,7 +34,7 @@ describe('Testando Bebidas - MODEL', () => {
     expect(drinksFiltered).to.have.lengthOf(1);
   })
 
-  it('Teste pesquisa por ID de bebida', async () => {
+  it('Teste pesquisa por ID de bebida', async function() {
     sinon.stub(connection, 'execute').resolves([[drinkFindByIdFromDB]])
 
     const drinkFiltered = await drinksModel.findById(13128);
