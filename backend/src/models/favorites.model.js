@@ -1,7 +1,7 @@
 const connection = require('./connection');
 const camelize = require('camelize');
 
-const getAll = async (userId) => {
+const getAll = async (username) => {
   const [favorites] = await connection.execute(`
   SELECT * FROM favorites f
   INNER JOIN users u ON u.id = f.user_id
@@ -11,8 +11,8 @@ const getAll = async (userId) => {
   LEFT JOIN (SELECT * FROM drinks
       INNER JOIN drinks_categories mc 
       ON drinks.id_category = mc.id) d on f.id_drink = d.id_drink
-  WHERE user_id = ?;
-  `, [userId])
+  WHERE username = ?;
+  `, [username])
 
   return camelize(favorites);
 }

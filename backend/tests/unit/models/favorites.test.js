@@ -7,7 +7,7 @@ const {favoritesModel} = require('../../../src/models/index')
 describe('Testando Favoritos - MODEL', function() {
   it('Testando se retorna todas as receitas favoritas de um usuário.',async function() {
     sinon.stub(connection, 'execute').resolves([allFavoritesMockFromDB])
-    const allFavorites = await favoritesModel.getAll(1);
+    const allFavorites = await favoritesModel.getAll('email@email.com');
     expect(allFavorites).to.be.an('array');
     expect(allFavorites).to.have.lengthOf(2);
   })
