@@ -30,19 +30,20 @@ services:
     ports:
       - 3001:3001
     environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-      MYSQL_PORT: 3306
-      MYSQL_HOST: database
-      PORT: 3001
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_HOST: ${MYSQL_HOST}
+      PORT: ${PORT}
   
   database:
     image: mysql:8.0.29
     container_name: receitas_db
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: receitas_db
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - 33060:3306
-    volumes:
-      - ./receitas.sql:/docker-entrypoint-initdb.d/receitas.sql
+    # volumes:
+    #   - ./receitas.sql:/docker-entrypoint-initdb.d/receitas.sql
