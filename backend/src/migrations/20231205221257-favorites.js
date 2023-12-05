@@ -1,38 +1,37 @@
-'use strict';
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('favorites', { 
       id_user: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.INTEGER,
         references: {
-          model: "users",
-          key: "id"
+          model: 'users',
+          key: 'id',
         },
-        onDelete: "CASCADE" 
+        onDelete: 'CASCADE', 
       },
       id_recipe: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.INTEGER,
         references: {
-          model: "recipes",
-          key: "id"
+          model: 'recipes',
+          key: 'id',
         },
-        onDelete: "CASCADE" 
+        onDelete: 'CASCADE', 
       },
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-  }
+    await queryInterface.dropTable('favorites');
+  },
 };
