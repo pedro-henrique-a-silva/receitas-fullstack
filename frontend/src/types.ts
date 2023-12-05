@@ -4,13 +4,10 @@ export type LoginType = {
 };
 
 export type Recipe = {
-  strMealThumb: string;
-  strDrinkThumb: string;
-  strMeal: string;
-  strDrink: string;
+  strThumb: string;
+  strName: string;
   strCategory: string;
-  idMeal: string;
-  idDrink: string;
+  id: number;
 };
 
 export type ContextType = {

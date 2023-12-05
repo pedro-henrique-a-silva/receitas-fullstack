@@ -131,7 +131,7 @@ function FavoriteRecipes() {
                 <p
                   data-testid={ `${index}-horizontal-top-text` }
                 >
-                  {`${recipe.nationality || recipe.alcoholicOrNot} - ${recipe.category}`}
+                  {`- ${recipe.nationality || recipe.alcoholicOrNot}`}
                 </p>
               </Stack>
             </ListItemButton>

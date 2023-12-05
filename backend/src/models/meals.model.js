@@ -3,12 +3,16 @@ const camelize = require('camelize');
 
 
 const getAll = async () => {
-  const [meals] = await connection.execute('SELECT * FROM meals');
+  const [meals] = await connection.execute(`
+  SELECT * FROM recipes WHERE recipe_type = 'meal'
+`);
   return camelize(meals);
 }
 
 const getAllCategories = async () => {
-  const [categories] = await connection.execute('SELECT * FROM meals_categories');
+  const [categories] = await connection.execute(`
+    SELECT category_name FROM categories WHERE category_type = 'meal'
+  `);
   return camelize(categories);
 }
 
@@ -26,10 +30,10 @@ const findByCategory = async (categoryName) => {
 
 const findById = async (mealId) => {
   const [[meal]] = await connection.execute(`
-  SELECT * FROM meals m
-  INNER JOIN meals_categories mc 
-  ON m.id_category = mc.id
-  WHERE id_meal = ?
+  SELECT * FROM recipes r
+  INNER JOIN categories c 
+  ON r.id_category = c.id
+  WHERE r.id = ?
   `, [mealId])
 
   return camelize(meal);

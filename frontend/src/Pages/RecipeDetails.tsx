@@ -46,13 +46,13 @@ function RecipeDetails(props: RecipeDetailsProps) {
   };
 
   const handleFavoriteClick = (recipeData: any) => {
-    const id = recipeData.idMeal || recipeData.idDrink;
+    const id = recipeData.id;
     const type = mealOrDrink.replace('s', '');
     const nationality = recipeData.strArea || '';
     const category = recipeData.strCategory;
     const alcoholicOrNot = recipeData.strAlcoholic || '';
-    const name = recipeData.strMeal || recipeData.strDrink;
-    const image = recipeData.strMealThumb || recipeData.strDrinkThumb;
+    const name = recipeData.strName;
+    const image = recipeData.strThumb;
 
     const newFavoriteRecipe = {
       id,
@@ -99,7 +99,9 @@ function RecipeDetails(props: RecipeDetailsProps) {
       }
     };
     getDetails();
-    setFavorite(isFavorite(recipeID));
+    const fav = isFavorite(recipeID);
+    console.log(fav);
+    setFavorite(fav);
   }, [recipeID, mealOrDrink]);
 
   const inProgress = isInProgress(mealOrDrink, recipeID);
@@ -145,7 +147,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
       {mealOrDrink === 'meals' && (
         <RecipeVideo>
           <iframe
-            title={ recipeDetails?.strMeal }
+            title={ recipeDetails?.strName }
             src={ recipeDetails?.strYoutube.replace('watch?v=', 'embed/') }
             allowFullScreen
             data-testid="video"

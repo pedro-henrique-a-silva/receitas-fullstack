@@ -2,12 +2,16 @@ const connection = require('./connection');
 const camelize = require('camelize');
 
 const getAll = async () => {
-  const [drinks] = await connection.execute('SELECT * FROM drinks');
+  const [drinks] = await connection.execute(`
+  SELECT * FROM recipes WHERE recipe_type = 'drink'
+`);
   return camelize(drinks);
 }
 
 const getAllCategories = async () => {
-  const [categories] = await connection.execute('SELECT * FROM drinks_categories');
+  const [categories] = await connection.execute(`
+  SELECT category_name FROM categories WHERE category_type = 'drink'
+`);
   return camelize(categories);
 }
 

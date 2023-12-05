@@ -31,8 +31,8 @@ function Recipes({ mealOrDrink }: RecipesProps) {
 
   const handleRecipeClick = (recipe: Recipe) => {
     const route = mealOrDrink === 'meals'
-      ? `/meals/${recipe.idMeal}`
-      : `/drinks/${recipe.idDrink}`;
+      ? `/meals/${recipe.id}`
+      : `/drinks/${recipe.id}`;
     navigate(route);
   };
 
@@ -98,13 +98,12 @@ function Recipes({ mealOrDrink }: RecipesProps) {
             elevation={ 4 }
           >
             <img
-              src={ mealOrDrink === 'meals'
-                ? recipe.strMealThumb : recipe.strDrinkThumb }
-              alt={ mealOrDrink === 'meals' ? recipe.strMeal : recipe.strDrink }
+              src={ recipe.strThumb }
+              alt={ recipe.strName }
               data-testid={ `${index}-card-img` }
             />
             <Typography mt={ 2 } mb={ 1 } variant="h5" align="center">
-              {mealOrDrink === 'meals' ? recipe.strMeal : recipe.strDrink}
+              {recipe.strName}
             </Typography>
           </CardRecipeStyle>
         ))}

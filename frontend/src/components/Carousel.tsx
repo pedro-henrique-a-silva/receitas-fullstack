@@ -23,7 +23,7 @@ function Carousel(props: CarouselProps) {
   useEffect(() => {
     const getData = async () => {
       const mealOrDrinkRecomend = mealOrDrink === 'meals' ? 'drinks' : 'meals';
-      const recomendData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
+      const recomendData = await fetchApi(`http://localhost:3001/${mealOrDrinkRecomend}/all`);
       setRecomendations(recomendData.slice(0, 6));
     };
     getData();
@@ -48,13 +48,13 @@ function Carousel(props: CarouselProps) {
               data-testid={ `${index}-recommendation-card` }
             >
               <img
-                src={ recomendation?.strMealThumb || recomendation?.strDrinkThumb }
+                src={ recomendation?.strThumb }
                 alt="recipeThumb"
               />
               <h3
                 data-testid={ `${index}-recommendation-title` }
               >
-                {recomendation?.strMeal || recomendation?.strDrink}
+                {recomendation?.strName}
 
               </h3>
 

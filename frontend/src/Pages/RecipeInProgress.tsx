@@ -115,13 +115,13 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   const handleFinishRecipe = () => {
     const dateNow = new Date();
     const newFinishRecipe = {
-      id: recipeDetails.idMeal || recipeDetails.idDrink,
+      id: recipeDetails.id,
       type: mealOrDrink.replace('s', ''),
+      category: recipeDetails.categoryName,
       nationality: recipeDetails.strArea || '',
-      category: recipeDetails.strCategory,
       alcoholicOrNot: recipeDetails.strAlcoholic || '',
-      name: recipeDetails.strMeal || recipeDetails.strDrink,
-      image: recipeDetails.strMealThumb || recipeDetails.strDrinkThumb,
+      name: recipeDetails.strName,
+      image: recipeDetails.strThumb,
       doneDate: dateNow.toISOString(),
       tags: (recipeDetails.strTags) ? recipeDetails.strTags.split(',') : [],
     };

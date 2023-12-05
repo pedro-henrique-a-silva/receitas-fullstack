@@ -21,13 +21,13 @@ function RecipeCover(props: RecipeCoverProps) {
     <RecipeCoverWrapper>
       <img
         data-testid="recipe-photo"
-        src={ recipeDetails?.strMealThumb || recipeDetails?.strDrinkThumb }
+        src={ recipeDetails?.strThumb}
         alt="recipeThumb"
       />
       <h1
         data-testid="recipe-title"
       >
-        {recipeDetails?.strMeal || recipeDetails?.strDrink}
+        {recipeDetails?.strName}
 
       </h1>
       <h3
@@ -49,8 +49,8 @@ function RecipeCover(props: RecipeCoverProps) {
           onClick={ () => handleFavoriteClick(recipeDetails) }
         >
           {favorite 
-          ? <HeartStraight data-testid="favorite-btn" size={32}/>
-          : <HeartStraight data-testid="favorite-btn" size={32} weight="fill"/>
+          ? <HeartStraight data-testid="favorite-btn" size={32} weight="fill"/>
+          : <HeartStraight data-testid="favorite-btn" size={32} />
           }
           
         </button>

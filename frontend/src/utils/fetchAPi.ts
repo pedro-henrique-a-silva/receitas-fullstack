@@ -24,5 +24,23 @@ export const fetchApi = async (url: string) => {
 
 export const fetchDetails = async (mealOrDrink: string, recipeID: string | undefined) => {
   const url = `http://localhost:3001/${mealOrDrink}/${recipeID}`;
-  return fetchApi(url);
+  return await fetchApi(url);
 };
+
+export const fetchUserData = async (username: string) => {
+  const data = {
+    "username": username
+  };
+
+  const requestOptions = {
+  method: 'POST',  
+  headers: {
+    'Content-Type': 'application/json', 
+  },
+  body: JSON.stringify(data)
+  };
+
+  const userData = await fetch('http://localhost:3001/users', requestOptions);
+
+  return userData;
+}

@@ -6,7 +6,7 @@ services:
     container_name: frontend-receita
     tty: true
     stdin_open: true
-    command: bash
+    command: npm run dev
     restart: always
     working_dir: /app
     volumes:
@@ -20,7 +20,7 @@ services:
     container_name: api-receita
     tty: true
     stdin_open: true
-    command: bash
+    command: npm run dev
     restart: always
     working_dir: /home/node/app
     volumes:
