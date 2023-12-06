@@ -1,9 +1,9 @@
 const express = require('express');
-const {drinksModel} = require('../models/index')
+const { drinksService } = require('../services/index')
 const drinksRouter = express.Router();
 
 drinksRouter.get('/all', async (req, res) => {
-  const allDrinks = await drinksModel.getAll();
+  const allDrinks = await drinksService.getAll();
 
   res.status(200).json(allDrinks);
 })
