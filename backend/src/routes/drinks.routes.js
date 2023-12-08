@@ -14,9 +14,9 @@ drinksRouter.get('/all/categories', async (req, res) => {
   res.status(200).json(allDrinksCategories);
 })
 
-drinksRouter.get('/category/:categoryId', async (req, res) => {
-  const { categoryId } = req.params;
-  const filteredDrinks = await drinksService.findByCategory(categoryId);
+drinksRouter.get('/category/:categoryName', async (req, res) => {
+  const { categoryName } = req.params;
+  const filteredDrinks = await drinksService.findByCategory(categoryName);
 
   res.status(200).json(filteredDrinks);
 })
