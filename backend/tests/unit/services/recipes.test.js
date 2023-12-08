@@ -40,9 +40,9 @@ describe("Tesando comidas - SERVICE", function () {
 
   it("Testando busca por todas as comidas por categoria", async function () {
     const recipeModel = sinon.stub(Recipe, 'findAll').resolves(mealsMocks.allMealsByCategoryFromDB);
-    const allMealsCategories = await mealsService.findByCategory('Beef');
+    const allMealsByCategory = await mealsService.findByCategory('Beef');
 
-    expect(allMealsCategories).to.be.deep.equal(mealsMocks.allMealsByCategoryFromDB)
+    expect(allMealsByCategory).to.be.deep.equal(mealsMocks.allMealsByCategoryFromDB)
     expect(recipeModel).to.have.been.calledWith({
       include: { 
         model: Category, 
@@ -54,6 +54,20 @@ describe("Tesando comidas - SERVICE", function () {
       order: [['strName', 'ASC']]
     })
   })
+
+  it("Testando busca de bebidas por id", async function () {
+    const recipeModel = sinon.stub(Recipe, 'findByPk').resolves(mealsMocks.mealByIdFromDB);
+    const meal = await mealsService.findById('53013');
+
+    expect(meal).to.be.deep.equal(mealsMocks.mealByIdFromDB)
+    expect(recipeModel).to.have.been.calledWith('53013',{
+      include: { 
+        model: Category, 
+        as: 'category', 
+        attributes: [ 'categoryName']
+      }
+    })
+  })
   
 })
 
@@ -63,7 +77,10 @@ describe('Testando bebidas - SERVICE', function () {
     const allDrink = await drinksService.getAll();
 
     expect(allDrink).to.be.deep.equal(drinksMocks.allDrinksFromDB)
-    expect(recipeModel).to.have.been.calledWith({where : {recipeType: 'drink'}})
+    expect(recipeModel).to.have.been.calledWith({
+      where: {recipeType: 'drink'}, 
+      order: [['strName', 'ASC']]
+    })
   })
 
   it("Testando busca por todas as categórias de bebidas", async function () {
@@ -74,6 +91,35 @@ describe('Testando bebidas - SERVICE', function () {
     expect(recipeModel).to.have.been.calledWith({
       attributes: [ 'categoryName'],
       where : {categoryType: 'drink'}
+    })
+  })
+  it("Testando busca por todas as bebidas por categoria", async function () {
+    const recipeModel = sinon.stub(Recipe, 'findAll').resolves(drinksMocks.allDrinksByCatetoryFromDB);
+    const allDrinksByCategory = await drinksService.findByCategory('Cocktail');
+
+    expect(allDrinksByCategory).to.be.deep.equal(drinksMocks.allDrinksByCatetoryFromDB)
+    expect(recipeModel).to.have.been.calledWith({
+      include: { 
+        model: Category, 
+        as: 'category', 
+        where: { categoryName: "Cocktail" },
+        attributes: [ 'categoryName']
+      },
+      where : { recipeType: 'drink' },
+      order: [['strName', 'ASC']]
+    })
+  })
+  it("Testando busca de bebidas por id", async function () {
+    const recipeModel = sinon.stub(Recipe, 'findByPk').resolves(drinksMocks.drinkByIdFromDB);
+    const drink = await drinksService.findById('17222');
+
+    expect(drink).to.be.deep.equal(drinksMocks.drinkByIdFromDB)
+    expect(recipeModel).to.have.been.calledWith('17222',{
+      include: { 
+        model: Category, 
+        as: 'category', 
+        attributes: [ 'categoryName']
+      }
     })
   })
   beforeEach(() => sinon.restore());
