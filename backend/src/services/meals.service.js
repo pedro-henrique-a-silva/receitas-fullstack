@@ -1,7 +1,10 @@
 const { Recipe, Category } = require('../models')
 
 const getAll = async () => {
-  const allMeals = await Recipe.findAll({where : {recipeType: 'meal'}})
+  const allMeals = await Recipe.findAll({
+    where : {recipeType: 'meal'},
+    order: [['strName', 'ASC']]
+  })
   return allMeals
 }
 
@@ -13,7 +16,23 @@ const getAllCategories = async () => {
   return allMealsCategories
 }
 
+const findByCategory = async (name) => {
+  const allMeals = await Recipe.findAll({
+    include: { 
+      model: Category, 
+      as: 'category', 
+      where: { categoryName: name },
+      attributes: [ 'categoryName']
+    },
+    where : { recipeType: 'meal' },
+    order: [['strName', 'ASC']]
+  })
+
+  return allMeals
+}
+
 module.exports = {
   getAll,
-  getAllCategories
+  getAllCategories,
+  findByCategory
 }
