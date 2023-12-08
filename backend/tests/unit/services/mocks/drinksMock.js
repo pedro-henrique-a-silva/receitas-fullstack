@@ -1273,6 +1273,43 @@ const allDrinksFromDB = [
   }
 ]
 
+const allDrinksCategoryFromDB = [
+  {
+    "categoryName": "Ordinary drink"
+  },
+  {
+    "categoryName": "Cocktail"
+  },
+  {
+    "categoryName": "Shake"
+  },
+  {
+    "categoryName": "Other / Unknown"
+  },
+  {
+    "categoryName": "Cocoa"
+  },
+  {
+    "categoryName": "Shot"
+  },
+  {
+    "categoryName": "Coffee / Tea"
+  },
+  {
+    "categoryName": "Homemade Liqueur"
+  },
+  {
+    "categoryName": "Punch / Party drink"
+  },
+  {
+    "categoryName": "Beer"
+  },
+  {
+    "categoryName": "Soft drink"
+  }
+]
+
 module.exports = {
   allDrinksFromDB,
+  allDrinksCategoryFromDB
 }

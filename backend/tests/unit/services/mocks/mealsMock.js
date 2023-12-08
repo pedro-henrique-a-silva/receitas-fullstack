@@ -1326,6 +1326,52 @@ const allMealsFromDB = [
   }
 ]
 
+const allMealsCategoryFromDB = [
+  {
+    "categoryName": "Beef"
+  },
+  {
+    "categoryName": "Breakfast"
+  },
+  {
+    "categoryName": "Chicken"
+  },
+  {
+    "categoryName": "Dessert"
+  },
+  {
+    "categoryName": "Goat"
+  },
+  {
+    "categoryName": "Lamb"
+  },
+  {
+    "categoryName": "Miscellaneous"
+  },
+  {
+    "categoryName": "Pasta"
+  },
+  {
+    "categoryName": "Pork"
+  },
+  {
+    "categoryName": "Seafood"
+  },
+  {
+    "categoryName": "Side"
+  },
+  {
+    "categoryName": "Starter"
+  },
+  {
+    "categoryName": "Vegan"
+  },
+  {
+    "categoryName": "Vegetarian"
+  }
+]
+
 module.exports = {
   allMealsFromDB,
+  allMealsCategoryFromDB
 }
