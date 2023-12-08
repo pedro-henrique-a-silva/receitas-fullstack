@@ -170,5 +170,12 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   })
 
+  recipeModel.associate = (models) => {
+    recipeModel.belongsTo(models.Category, {
+      foreignKey: 'idCategory',
+      as: 'category'
+    })
+  }
+
   return recipeModel
 }

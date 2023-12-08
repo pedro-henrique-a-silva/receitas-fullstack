@@ -19,5 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   })
 
+  categoriesModel.associate = (models) => {
+    categoriesModel.hasOne(models.Recipe, {
+      foreignKey: 'idCategory',
+      as: 'category'
+    })
+  }
+
   return categoriesModel
 }
