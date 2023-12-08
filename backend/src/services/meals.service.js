@@ -31,8 +31,21 @@ const findByCategory = async (name) => {
   return allMeals
 }
 
+const findById = async (mealId) => {
+  const meal = await Recipe.findByPk(mealId, {
+    include: { 
+      model: Category,
+      as: 'category', 
+      attributes: [ 'categoryName']
+    },
+  })
+
+  return meal
+}
+
 module.exports = {
   getAll,
   getAllCategories,
-  findByCategory
+  findByCategory,
+  findById
 }
