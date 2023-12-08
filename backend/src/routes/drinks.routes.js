@@ -9,21 +9,21 @@ drinksRouter.get('/all', async (req, res) => {
 })
 
 drinksRouter.get('/all/categories', async (req, res) => {
-  const allDrinksCategories = await drinksModel.getAllCategories();
+  const allDrinksCategories = await drinksService.getAllCategories();
 
   res.status(200).json(allDrinksCategories);
 })
 
 drinksRouter.get('/category/:categoryId', async (req, res) => {
   const { categoryId } = req.params;
-  const filteredDrinks = await drinksModel.findByCategory(categoryId);
+  const filteredDrinks = await drinksService.findByCategory(categoryId);
 
   res.status(200).json(filteredDrinks);
 })
 
 drinksRouter.get('/:drinksId', async (req, res) => {
   const { drinksId } = req.params;
-  const drink = await drinksModel.findById(drinksId);
+  const drink = await drinksService.findById(drinksId);
 
   res.status(200).json(drink);
 })

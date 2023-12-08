@@ -9,21 +9,21 @@ mealsRouter.get('/all', async (req, res) => {
 })
 
 mealsRouter.get('/all/categories', async (req, res) => {
-  const allCategories = await mealsModel.getAllCategories();
+  const allCategories = await mealsService.getAllCategories();
 
   res.status(200).json(allCategories);
 })
 
 mealsRouter.get('/category/:categoryName', async (req, res) => {
   const { categoryName } = req.params;
-  const filteredMeals = await mealsModel.findByCategory(categoryName);
+  const filteredMeals = await mealsService.findByCategory(categoryName);
 
   res.status(200).json(filteredMeals);
 })
 
 mealsRouter.get('/:mealsId', async (req, res) => {
   const { mealsId } = req.params;
-  const meal = await mealsModel.findById(mealsId);
+  const meal = await mealsService.findById(mealsId);
   res.status(200).json(meal);
 })
 
