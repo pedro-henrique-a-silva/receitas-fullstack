@@ -10,16 +10,21 @@ const drinksMocks = require('./mocks/drinksMock')
 const { Recipe, Category } = require('../../../src/models')
 
 const { mealsService, drinksService } = require('../../../src/services');
-const { afterEach, describe } = require('node:test');
+
+let sandbox = sinon.createSandbox();
 
 describe("Tesando comidas - SERVICE", function () {
+  beforeEach(() => sinon.restore());
 
   it("Testando busca por todas as comidas", async function () {
     const recipeModel = sinon.stub(Recipe, 'findAll').resolves(mealsMocks.allMealsFromDB);
     const allMeals = await mealsService.getAll();
 
     expect(allMeals).to.be.deep.equal(mealsMocks.allMealsFromDB)
-    expect(recipeModel).to.have.been.calledWith({where : {recipeType: 'meal'}})
+    expect(recipeModel).to.have.been.calledWith({
+      where : {recipeType: 'meal'},
+      order: [['strName', 'ASC']]
+    })
   })
 
   it("Testando busca por todas as categórias de comidas", async function () {
@@ -32,7 +37,24 @@ describe("Tesando comidas - SERVICE", function () {
       where : {categoryType: 'meal'}
     })
   })
-  beforeEach(sinon.restore)
+
+  it("Testando busca por todas as comidas por categoria", async function () {
+    const recipeModel = sinon.stub(Recipe, 'findAll').resolves(mealsMocks.allMealsByCategoryFromDB);
+    const allMealsCategories = await mealsService.findByCategory('Beef');
+
+    expect(allMealsCategories).to.be.deep.equal(mealsMocks.allMealsByCategoryFromDB)
+    expect(recipeModel).to.have.been.calledWith({
+      include: { 
+        model: Category, 
+        as: 'category', 
+        where: { categoryName: "Beef" },
+        attributes: [ 'categoryName']
+      },
+      where : { recipeType: 'meal' },
+      order: [['strName', 'ASC']]
+    })
+  })
+  
 })
 
 describe('Testando bebidas - SERVICE', function () {
@@ -54,5 +76,5 @@ describe('Testando bebidas - SERVICE', function () {
       where : {categoryType: 'drink'}
     })
   })
-  beforeEach(sinon.restore)
+  beforeEach(() => sinon.restore());
 })
