@@ -4,7 +4,7 @@ export const Container = styled('div')`
   width: 100%;
   position: relative;
   margin-bottom: 4rem;
-  z-index: -1;
+  /* z-index: -1; */
 
   & div.swiper-wrapper div {
     display: flex;
