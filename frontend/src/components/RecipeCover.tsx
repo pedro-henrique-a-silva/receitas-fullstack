@@ -34,7 +34,7 @@ function RecipeCover(props: RecipeCoverProps) {
         data-testid="recipe-category"
       >
         {
-         recipeDetails?.categoryName
+         recipeDetails?.category.categoryName
         }
 
       </h3>

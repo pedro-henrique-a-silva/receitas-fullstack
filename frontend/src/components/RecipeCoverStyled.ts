@@ -36,7 +36,7 @@ export const RecipeCoverWrapper = styled('section')`
     top: 10px;
     z-index: 100;
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.2rem;
     letter-spacing: 0.3rem;
     -webkit-text-stroke: 1px #f01a23;
   }
