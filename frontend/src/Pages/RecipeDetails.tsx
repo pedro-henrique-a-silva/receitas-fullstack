@@ -100,7 +100,6 @@ function RecipeDetails(props: RecipeDetailsProps) {
     };
     getDetails();
     const fav = isFavorite(recipeID);
-    console.log(fav);
     setFavorite(fav);
   }, [recipeID, mealOrDrink]);
 

@@ -11,6 +11,7 @@ export const ButtonFixed = styled(Button)`
   text-align: center;
   text-transform: uppercase;
   transform: translateX(-50%);
+  z-index: 100;
 `;
 
 export const RecipeVideo = styled('div')`
