@@ -26,5 +26,21 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   })
 
+  favoriteModel.associate = (models) => {
+    models.User.belongsToMany(models.Recipe, {
+      through: favoriteModel,
+      foreignKey: "idUser",
+      otherKey: "idRecipe",
+      as: "recipes"
+    })
+
+    models.Recipe.belongsToMany(models.User, {
+      through: favoriteModel,
+      foreignKey: "idRecipe",
+      otherKey: "idUser",
+      as: "users"
+    })
+  }
+
   return favoriteModel
 }
