@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Fade } from '@mui/material';
+import {Stack, TextField, Button, Fade } from '@mui/material';
 import { CookingPot } from '@phosphor-icons/react';
 import { MainLogin, LoginWrapper } from './LoginStyle';
 import { LoginType, RegisterType } from '../types';
@@ -20,6 +20,7 @@ function Login() {
   const [loginUser, setLoginUser] = useState<LoginType>(LOGIN_INITIAL_STATE);
   const [registerUser, setRegisterUser] = useState<RegisterType>(REGISTER_INITIAL_STATE);
   const [isLogin, setIsLogin] = useState(true);
+  const [formError, setFormError] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -59,8 +60,34 @@ function Login() {
     return regexEmail.test(registerUser.email);
   };
 
-  const changeSignUp = () => {
+  const changeSignIn = () => {
     setIsLogin((prev) => !prev)
+  }
+
+  const signUp = async () => {
+    const postData = {
+      name: registerUser.name,
+      username: registerUser.email,
+      password: registerUser.password
+    };
+ 
+    const requestOptions = {
+       method: 'POST',  
+       headers: {
+         'Content-Type': 'application/json', 
+       },
+       body: JSON.stringify(postData)
+    };
+ 
+    const signUpResponse = await fetch('http://localhost:3001/user/signup', requestOptions);
+
+    if (signUpResponse.status === 201) {
+      changeSignIn()
+      return
+    }
+
+    setLoginUser(REGISTER_INITIAL_STATE)
+    setFormError(true)
   }
 
   const navigate = useNavigate();
@@ -69,10 +96,32 @@ function Login() {
   const setUserLocalStorage = () => localStorage
     .setItem('user', JSON.stringify({ email: loginUser.email }));
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setUserLocalStorage();
-    toMealsAfterClick();
+    const postData = {
+     username: loginUser.email,
+     password: loginUser.password
+    };
+
+    const requestOptions = {
+      method: 'POST',  
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify(postData)
+    };
+
+    const loginResponse = await fetch('http://localhost:3001/user/login', requestOptions);
+
+    if (loginResponse.status === 200) {
+      setUserLocalStorage();
+      toMealsAfterClick();
+      return
+    };
+
+    setLoginUser(LOGIN_INITIAL_STATE)
+    setFormError(true)
+    
   };
 
   return (
@@ -87,6 +136,7 @@ function Login() {
               onSubmit={ onSubmit }
             >
               <TextField
+                error={formError}
                 label="Email"
                 variant="outlined"
                 data-testid="email-input"
@@ -102,6 +152,7 @@ function Login() {
               />
   
               <TextField
+                error={formError}
                 label="Senha"
                 variant="outlined"
                 data-testid="password-input"
@@ -114,25 +165,27 @@ function Login() {
                 margin="dense"
                 sx={ { mb: 2 } }
               />
-  
-              <Button
-                variant="contained"
-                data-testid="login-submit-btn"
-                disabled={ !validateForm() }
-                type="submit"
-                color="secondary"
-              >
-                Entrar
-              </Button>
-              <Button
-                variant="text"
-                data-testid="register-change-btn"
-                type="button"
-                color="secondary"
-                onClick={changeSignUp}
-              >
-                inscrever-se
-              </Button>
+              <Stack spacing={2}>
+                <Button
+                  variant="contained"
+                  data-testid="login-submit-btn"
+                  disabled={ !validateForm() }
+                  type="submit"
+                  color="secondary"
+                >
+                  Entrar
+                </Button>
+
+                <Button
+                  variant="text"
+                  data-testid="register-change-btn"
+                  type="button"
+                  color="secondary"
+                  onClick={changeSignIn}
+                >
+                  inscrever-se
+                </Button>
+              </Stack>
             </form>)
           : (<form
             onSubmit={ onSubmit }
@@ -180,25 +233,28 @@ function Login() {
               margin="dense"
               sx={ { mb: 2 } }
             />
-
-            <Button
-              variant="contained"
-              data-testid="login-submit-btn"
-              disabled={ !validateFormRegister() }
-              type="submit"
-              color="secondary"
-            >
-              Inscrever-se
-            </Button>
-            <Button
-                variant="text"
-                data-testid="login-change-btn"
+            <Stack spacing={2}>
+              <Button
+                variant="contained"
+                data-testid="login-submit-btn"
+                disabled={ !validateFormRegister() }
                 type="button"
+                onClick={signUp}
                 color="secondary"
-                onClick={changeSignUp}
               >
-                Ja tenho uma conta.
+                Inscrever-se
               </Button>
+              <Button
+                  variant="text"
+                  data-testid="login-change-btn"
+                  type="button"
+                  color="secondary"
+                  onClick={changeSignIn}
+                >
+                  Ja tenho uma conta.
+                </Button>
+
+            </Stack>
           </form>)
           }
           
