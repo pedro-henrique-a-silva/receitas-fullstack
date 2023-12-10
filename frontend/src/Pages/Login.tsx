@@ -96,6 +96,9 @@ function Login() {
   const setUserLocalStorage = () => localStorage
     .setItem('user', JSON.stringify({ email: loginUser.email }));
 
+  const setJwtLocalStorage = (token: string) => localStorage
+    .setItem('token', token);
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const postData = {
@@ -112,8 +115,10 @@ function Login() {
     };
 
     const loginResponse = await fetch('http://localhost:3001/user/login', requestOptions);
+    const loginReponseJson = await loginResponse.json()
 
     if (loginResponse.status === 200) {
+      setJwtLocalStorage(loginReponseJson.token)
       setUserLocalStorage();
       toMealsAfterClick();
       return
