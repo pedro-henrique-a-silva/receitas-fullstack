@@ -10,7 +10,7 @@ const {
 } = require('sequelize-test-helpers');
 
 const usersModelProperties = [
-  "id", "username", "password"
+  "id","name", "username", "password"
 ]
 
 const UsersModel= require('../../../src/models/users.model')
