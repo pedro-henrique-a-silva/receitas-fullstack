@@ -9,5 +9,6 @@ app.use(express.json());
 app.use('/meals', routes.mealsRouter);
 app.use('/drinks', routes.drinksRouter);
 app.use('/user', routes.userRouter);
+app.use('/favorites', routes.favoritesRouter);
 
 module.exports = app;
