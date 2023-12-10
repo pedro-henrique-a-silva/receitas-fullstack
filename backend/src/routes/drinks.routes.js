@@ -1,12 +1,15 @@
 const express = require('express');
 const { drinkController } = require('../controllers');
+const { authMiddleware } = require('../middleware')
 const drinksRouter = express.Router();
 
-drinksRouter.get('/all', drinkController.all)
+drinksRouter.use(authMiddleware.auth)
 
-drinksRouter.get('/all/categories', drinkController.allCategories)
+drinksRouter.get('/all',drinkController.all)
 
-drinksRouter.get('/category/:categoryName', drinkController.findByCategoryName)
+drinksRouter.get('/all/categories',drinkController.allCategories)
+
+drinksRouter.get('/category/:categoryName',drinkController.findByCategoryName)
 
 drinksRouter.get('/:drinksId', drinkController.findById)
 
