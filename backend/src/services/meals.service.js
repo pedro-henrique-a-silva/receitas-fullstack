@@ -5,7 +5,7 @@ const getAll = async () => {
     where : {recipeType: 'meal'},
     order: [['strName', 'ASC']]
   })
-  return allMeals
+  return {status: "SUCCESS", message: allMeals}
 }
 
 const getAllCategories = async () => {
@@ -13,7 +13,7 @@ const getAllCategories = async () => {
     attributes: [ 'categoryName'],
     where : {categoryType: 'meal'}
   })
-  return allMealsCategories
+  return {status: "SUCCESS", message: allMealsCategories}
 }
 
 const findByCategory = async (name) => {
@@ -28,7 +28,7 @@ const findByCategory = async (name) => {
     order: [['strName', 'ASC']]
   })
 
-  return allMeals
+  return {status: "SUCCESS", message: allMeals}
 }
 
 const findById = async (mealId) => {
@@ -40,7 +40,7 @@ const findById = async (mealId) => {
     },
   })
 
-  return meal
+  return {status: "SUCCESS", message: meal}
 }
 
 module.exports = {
