@@ -3,9 +3,10 @@ const { Recipe, Category } = require('../models')
 const getAll = async () => {
   const allDrinks = await Recipe.findAll({
     where: {recipeType: 'drink'}, 
-    order: [['strName', 'ASC']]
+    order: [['str_name', 'ASC']]
   })
-  return {status: "SUCCESS", messaage: allDrinks}
+
+  return { status: "SUCCESS", message: allDrinks }
 }
 
 const getAllCategories = async () => {
@@ -13,6 +14,7 @@ const getAllCategories = async () => {
     attributes: [ 'categoryName'],
     where : {categoryType: 'drink'}
   })
+
   return {status: "SUCCESS", message: allDrinksCategories}
 }
 
