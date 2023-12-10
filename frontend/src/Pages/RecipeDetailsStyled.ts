@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 
 export const ButtonFixed = styled(Button)`
   bottom: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   left: 50%;
   padding: 0.5rem;
