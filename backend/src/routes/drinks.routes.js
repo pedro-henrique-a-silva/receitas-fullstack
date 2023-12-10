@@ -5,27 +5,27 @@ const drinksRouter = express.Router();
 drinksRouter.get('/all', async (req, res) => {
   const allDrinks = await drinksService.getAll();
 
-  res.status(200).json(allDrinks);
+  return res.status(httpMap[allDrinks.status]).json(allDrinks.message);
 })
 
 drinksRouter.get('/all/categories', async (req, res) => {
   const allDrinksCategories = await drinksService.getAllCategories();
 
-  res.status(200).json(allDrinksCategories);
+  return res.status(httpMap[allDrinksCategories.status]).json(allDrinksCategories.message);
 })
 
 drinksRouter.get('/category/:categoryName', async (req, res) => {
   const { categoryName } = req.params;
   const filteredDrinks = await drinksService.findByCategory(categoryName);
 
-  res.status(200).json(filteredDrinks);
+  return res.status(httpMap[filteredDrinks.status]).json(filteredDrinks.message);
 })
 
 drinksRouter.get('/:drinksId', async (req, res) => {
   const { drinksId } = req.params;
   const drink = await drinksService.findById(drinksId);
 
-  res.status(200).json(drink);
+  return res.status(httpMap[drink.status]).json(drink.message);
 })
 
 module.exports = drinksRouter;
