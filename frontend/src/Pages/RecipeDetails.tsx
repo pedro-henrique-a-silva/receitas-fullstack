@@ -14,8 +14,8 @@ import {
   isFavorite,
   isInProgress,
 } from '../utils/utilsLocalStorage';
-import { fetchDetails } from '../utils/fetchAPi';
 import RecipeCover from '../components/RecipeCover';
+import FetchAPI from '../hooks/FetchAPI';
 
 type RecipeDetailsProps = {
   mealOrDrink: 'meals' | 'drinks';
@@ -30,6 +30,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
 
   const [isVisible, setIsVisible] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const { fetchDetails } = FetchAPI();
 
   const getIngredients = () => Object
     .entries(recipeDetails)
