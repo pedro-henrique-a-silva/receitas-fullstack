@@ -1,22 +1,9 @@
 const express = require('express');
-const { userService } = require('../services/index')
+const {userController} = require('../controllers')
 const userRouter = express.Router();
-const httpMap = require('../utils/httpMap')
 
-userRouter.post('/login', async (req, res) => {
-  const { username, password } = req.body
+userRouter.post('/login', userController.login)
 
-  const userAuth = await userService.login({ username, password })
-
-  return res.status(httpMap[userAuth.status]).json(userAuth.message)
-})
-
-userRouter.post('/signup', async (req, res) => {
-  const {name, username, password } = req.body
-
-  const userAuth = await userService.signup({name, username, password })
-
-  return res.status(httpMap[userAuth.status]).json(userAuth.message)
-})
+userRouter.post('/signup', userController.signup)
 
 module.exports = userRouter;
