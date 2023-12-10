@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Container} from './CarouselStyle';
-import { fetchApi } from '../utils/fetchAPi';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import FetchAPI from '../hooks/FetchAPI';
 
 import { 
   EffectCoverflow,
@@ -24,10 +24,12 @@ function Carousel(props: CarouselProps) {
   const { mealOrDrink } = props;
   const [recomendations, setRecomendations] = useState<any[]>([]);
 
+  const { fetchAllRecipes } = FetchAPI();
+
   useEffect(() => {
     const getData = async () => {
       const mealOrDrinkRecomend = mealOrDrink === 'meals' ? 'drinks' : 'meals';
-      const recomendData = await fetchApi(`http://localhost:3001/${mealOrDrinkRecomend}/all`);
+      const recomendData = await fetchAllRecipes(mealOrDrinkRecomend);
       setRecomendations(recomendData.slice(0, 6));
     };
     getData();
