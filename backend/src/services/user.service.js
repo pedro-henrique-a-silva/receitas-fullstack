@@ -1,11 +1,26 @@
 const { User } = require('../models')
+const jwt = require('jsonwebtoken')
 
 const login = async (userData) => {
   const user = await User.findOne({where: userData})
 
   if (!user) return {status: "INVALID_DATA", message: "Dados incorretos"}
 
-  return {status: "SUCCESS", message: user}
+  const secret = process.env.JWT_SECRET;
+
+  const payload = {
+    id: user.id,
+    username: user.username
+  }
+
+  const jwtConfig = {
+      expiresIn: '1d',
+      algorithm: 'HS256',
+    };
+
+  const token = jwt.sign({ payload }, secret, jwtConfig);
+
+  return {status: "SUCCESS", message: { token }}
 }
 
 const signup = async (userData) => {
