@@ -83,6 +83,8 @@ function Login() {
 
     if (signUpResponse.status === 201) {
       changeSignIn()
+      setFormError(false)
+      setRegisterUser(REGISTER_INITIAL_STATE)
       return
     }
 
@@ -121,6 +123,7 @@ function Login() {
       setJwtLocalStorage(loginReponseJson.token)
       setUserLocalStorage();
       toMealsAfterClick();
+      setLoginUser(LOGIN_INITIAL_STATE)
       return
     };
 
