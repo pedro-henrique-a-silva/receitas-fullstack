@@ -67,11 +67,25 @@ function FetchAPI() {
     
     return recipeJson;
   };
+
+  const fetchFavorites = async () => {
+    const requestOptions = constructRequestHeader();
+    const favorites = await fetch(`http://localhost:3001/favorites`, requestOptions);
+    const favoritesJson = await favorites.json();
+    
+    if (favorites.status === 401) {
+      navigate('/')
+      return
+    }
+    
+    return favoritesJson;
+  };
   return {
     fetchAllRecipes,
     fetchRecipesByCategory,
     fetchDetails,
-    fetchCategoriesList
+    fetchCategoriesList,
+    fetchFavorites
   }
 }
 
