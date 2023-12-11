@@ -6,12 +6,11 @@ type RecipeCoverProps = {
   recipeDetails: any;
   favorite: boolean;
   handleShareClick: () => void;
-  handleFavoriteClick: (recipeData: any) => void;
+  handleFavoriteClick: () => void;
 };
 
 function RecipeCover(props: RecipeCoverProps) {
   const {
-    mealOrDrink,
     recipeDetails,
     favorite,
     handleShareClick,
@@ -46,7 +45,7 @@ function RecipeCover(props: RecipeCoverProps) {
           <ShareNetwork size={32} />
         </button>
         <button
-          onClick={ () => handleFavoriteClick(recipeDetails) }
+          onClick={ handleFavoriteClick }
         >
           {favorite 
           ? <HeartStraight data-testid="favorite-btn" size={32} weight="fill"/>

@@ -11,7 +11,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { ButtonFixed, RecipeVideo } from './RecipeDetailsStyled';
 import {
-  isFavorite,
   isInProgress,
 } from '../utils/utilsLocalStorage';
 import RecipeCover from '../components/RecipeCover';
@@ -30,7 +29,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
 
   const [isVisible, setIsVisible] = useState(false);
   const [favorite, setFavorite] = useState(false);
-  const { fetchDetails } = FetchAPI();
+  const { fetchDetails, fetchUpdateFavorites } = FetchAPI();
 
   const getIngredients = () => Object
     .entries(recipeDetails)
@@ -46,43 +45,9 @@ function RecipeDetails(props: RecipeDetailsProps) {
     navigate(`/${mealOrDrink}/${recipeID}/in-progress`);
   };
 
-  const handleFavoriteClick = (recipeData: any) => {
-    const id = recipeData.id;
-    const type = mealOrDrink.replace('s', '');
-    const nationality = recipeData.strArea || '';
-    const category = recipeData.strCategory;
-    const alcoholicOrNot = recipeData.strAlcoholic || '';
-    const name = recipeData.strName;
-    const image = recipeData.strThumb;
-
-    const newFavoriteRecipe = {
-      id,
-      type,
-      nationality,
-      category,
-      alcoholicOrNot,
-      name,
-      image,
-    };
-
-    const recipesLocalStorage = JSON
-      .parse(localStorage.getItem('favoriteRecipes') as string)
-    || [];
-
-    if (isFavorite(recipeID)) {
-      const newFavoriteRecipes = recipesLocalStorage
-        .filter((recipe: any) => recipe.id !== recipeID);
-
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify(newFavoriteRecipes));
-
-      setFavorite(false);
-    } else {
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify([...recipesLocalStorage, newFavoriteRecipe]));
-
-      setFavorite(true);
-    }
+  const handleFavoriteClick = async () => {
+    const { favorite } = await fetchUpdateFavorites(recipeDetails.id)
+    setFavorite(favorite)
   };
 
   const handleShareClick = () => {
@@ -97,11 +62,10 @@ function RecipeDetails(props: RecipeDetailsProps) {
       const details = await fetchDetails(mealOrDrink, recipeID);
       if (details) {
         setRecipeDetails(details);
+        setFavorite(details.favorite);
       }
     };
     getDetails();
-    const fav = isFavorite(recipeID);
-    setFavorite(fav);
   }, [recipeID, mealOrDrink]);
 
   const inProgress = isInProgress(mealOrDrink, recipeID);

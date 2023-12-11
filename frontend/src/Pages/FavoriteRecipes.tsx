@@ -19,19 +19,15 @@ function FavoriteRecipes() {
   const [filteredFavoriteRecipes, setFilteredFavoriteRecipes] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
-  const {fetchFavorites} = FetchAPI()
+  const {fetchFavorites, fetchUpdateFavorites} = FetchAPI()
 
   const toggleIsVisible = () => {
     setIsVisible(!isVisible);
   };
 
-  const handleFavoriteClick = (recipeData: any) => {
-    const newFavoriteRecipes = favoriteRecipes
-      .filter((recipe: any) => recipe.id !== recipeData.id);
-
-    localStorage.setItem('favoriteRecipes', JSON
-      .stringify(newFavoriteRecipes));
-    setFavoriteRecipes(newFavoriteRecipes);
+  const handleFavoriteClick = async (recipeId: number) => {
+    const { favorite } = await fetchUpdateFavorites(recipeId)
+    setFavoriteRecipes(favoriteRecipes.filter((recipe) => recipe.id !== recipeId))
   };
 
   const handleShareClick = (recipeData: any) => {
@@ -91,16 +87,16 @@ function FavoriteRecipes() {
       <List>
         {favoriteRecipesToRender.map((recipe, index) => (
           <ListItemStyled
-            onClick={() => handleShareClick(recipe)}
+            
             disablePadding
             key={ index }
             data-testid={ `${index}-ingredient-name-and-measure` }
             secondaryAction={
               <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton  size="small">
+                <IconButton onClick={() => handleShareClick(recipe.id)}  size="small">
                   <ShareNetwork />
                 </IconButton>
-                <IconButton size="small">
+                <IconButton onClick={() => handleFavoriteClick(recipe.id)} size="small">
                   <HeartStraight color="#f01a23" weight="fill" />
                 </IconButton>
               </Stack>

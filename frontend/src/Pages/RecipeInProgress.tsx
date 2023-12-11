@@ -8,9 +8,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { getFromLocalStorage,
-  isFavorite,
   saveToLocalStorage } from '../utils/utilsLocalStorage';
-
+import FetchAPI from '../hooks/FetchAPI';
 import Message from '../components/Message';
 import RecipeCover from '../components/RecipeCover';
 
@@ -29,6 +28,8 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
+  const { fetchDetails, fetchUpdateFavorites } = FetchAPI();
+
   const getIngredients = () => Object
     .entries(recipeDetails)
     .filter(([key, value]) => key.includes('strIngredient') && value)
@@ -39,43 +40,9 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     setIsVisible(!isVisible);
   };
 
-  const handleFavoriteClick = (recipeData: any) => {
-    const id = recipeData.idMeal || recipeData.idDrink;
-    const type = mealOrDrink.replace('s', '');
-    const nationality = recipeData.strArea || '';
-    const category = recipeData.strCategory;
-    const alcoholicOrNot = recipeData.strAlcoholic || '';
-    const name = recipeData.strMeal || recipeData.strDrink;
-    const image = recipeData.strMealThumb || recipeData.strDrinkThumb;
-
-    const newFavoriteRecipe = {
-      id,
-      type,
-      nationality,
-      category,
-      alcoholicOrNot,
-      name,
-      image,
-    };
-
-    const recipesLocalStorage = JSON
-      .parse(localStorage.getItem('favoriteRecipes') as string)
-      || [];
-
-    if (isFavorite(recipeID)) {
-      const newFavoriteRecipes = recipesLocalStorage
-        .filter((recipe: any) => recipe.id !== recipeID);
-
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify(newFavoriteRecipes));
-
-      setFavorite(false);
-    } else {
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify([...recipesLocalStorage, newFavoriteRecipe]));
-
-      setFavorite(true);
-    }
+  const handleFavoriteClick = async () => {
+    const { favorite } = await fetchUpdateFavorites(recipeDetails.id)
+    setFavorite(favorite)
   };
 
   const handleShareClick = () => {
@@ -98,14 +65,6 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     } else {
       ingredientsProgress.splice(currentIndex, 1);
     }
-
-    // if (isChecked) {
-    //   // (parentEl as HTMLElement).style.textDecoration = 'line-through solid rgb(0, 0, 0)';
-    //   (parentEl as HTMLElement).classList.add(style.ingredientChecked);
-    // } else {
-    //   (parentEl as HTMLElement).classList.remove(style.ingredientChecked);
-    //   // (parentEl as HTMLElement).style.textDecoration = 'none';
-    // }
 
     saveToLocalStorage(mealOrDrink, recipeID, ingredientsProgress);
     setRecipeInProgress(ingredientsProgress);
@@ -136,12 +95,13 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   };
 
   useEffect(() => {
-    // const getDetails = async () => {
-    //   const details = await fetchDetails(mealOrDrink, recipeID);
-    //   if (details) {
-    //     setRecipeDetails(details);
-    //   }
-    // };
+    const getDetails = async () => {
+      const details = await fetchDetails(mealOrDrink, recipeID);
+      if (details) {
+        setRecipeDetails(details);
+        setFavorite(details.favorite);
+      }
+    };
 
     const recipeInProgressLocalStore = getFromLocalStorage('inProgressRecipes')
     || { meals: {}, drinks: {} };
@@ -151,10 +111,8 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     if (Object.keys(recipesData).includes(recipeID as string)) {
       ingredientsProgress = recipesData[recipeID as string];
     }
-
     getDetails();
     setRecipeInProgress(ingredientsProgress);
-    setFavorite(isFavorite(recipeID));
   }, [recipeID, mealOrDrink]);
 
   
