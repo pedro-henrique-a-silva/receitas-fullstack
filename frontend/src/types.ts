@@ -21,14 +21,19 @@ export type ContextType = {
   updateRecipes: (recipesData: any[]) => void,
 };
 
+type CategoryName = {
+  categoryName: string
+}
+
 export type DoneRecipeType = {
   id: string,
-  type: string,
-  nationality: string,
-  category: string,
+  recipeType: string,
+  strArea: string,
+  category: CategoryName,
   alcoholicOrNot: string,
-  name: string,
-  image: string,
+  strName: string,
+  strThumb: string,
   doneDate: string,
+  strTags: string[],
   tags: string[]
 };
