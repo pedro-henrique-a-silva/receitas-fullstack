@@ -28,7 +28,7 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
-  const { fetchDetails, fetchUpdateFavorites } = FetchAPI();
+  const { fetchUpdateFavorites, fetchDetails, fetchUpdateDones } = FetchAPI();
 
   const getIngredients = () => Object
     .entries(recipeDetails)
@@ -70,26 +70,8 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     setRecipeInProgress(ingredientsProgress);
   };
 
-  const handleFinishRecipe = () => {
-    const dateNow = new Date();
-    const newFinishRecipe = {
-      id: recipeDetails.id,
-      type: mealOrDrink.replace('s', ''),
-      category: recipeDetails.categoryName,
-      nationality: recipeDetails.strArea || '',
-      alcoholicOrNot: recipeDetails.strAlcoholic || '',
-      name: recipeDetails.strName,
-      image: recipeDetails.strThumb,
-      doneDate: dateNow.toISOString(),
-      tags: (recipeDetails.strTags) ? recipeDetails.strTags.split(',') : [],
-    };
-
-    const recipesLocalStorage = JSON
-      .parse(localStorage.getItem('doneRecipes') as string)
-      || [];
-
-    localStorage.setItem('doneRecipes', JSON
-      .stringify([...recipesLocalStorage, newFinishRecipe]));
+  const handleFinishRecipe = async () => {
+    await fetchUpdateDones(recipeDetails.id)
 
     navigate('/done-recipes');
   };
