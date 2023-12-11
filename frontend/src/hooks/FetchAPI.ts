@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 function FetchAPI() {
   const navigate = useNavigate()
 
-  const constructRequestHeader = () => {
+  const RequestHeader = () => {
     const token = localStorage.getItem('token') || ''
     return {
       headers: {
@@ -12,8 +12,21 @@ function FetchAPI() {
    };
   }
 
+  const RequestHeaderUpdateFavorite = (recipeId: number) => {
+    const token = localStorage.getItem('token') || '';
+    const postData = {recipeId}
+    return {
+      method: 'POST',  
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(postData)
+   };
+  }
+
   const fetchAllRecipes = async (mealOrDrink: string) => {
-    const requestOptions = constructRequestHeader();
+    const requestOptions = RequestHeader();
     const recipes = await fetch(`http://localhost:3001/${mealOrDrink}/all`, requestOptions);
     const recipesJson = await recipes.json();
   
@@ -26,7 +39,7 @@ function FetchAPI() {
   };
 
   const fetchRecipesByCategory = async (mealOrDrink: string, category: string) => {
-    const requestOptions = constructRequestHeader();
+    const requestOptions = RequestHeader();
     const recipesByCategory = await fetch(`http://localhost:3001/${mealOrDrink}/category/${category}`,requestOptions);
     const recipesByCategoryJson = await recipesByCategory.json();
   
@@ -43,7 +56,7 @@ function FetchAPI() {
   };
 
   const fetchCategoriesList = async (mealOrDrink: string) => {
-    const requestOptions = constructRequestHeader();
+    const requestOptions = RequestHeader();
     const categories = await fetch(`http://localhost:3001/${mealOrDrink}/all/categories`, requestOptions)
     const categoriesJson = await categories.json()
 
@@ -56,7 +69,7 @@ function FetchAPI() {
   }
   
   const fetchDetails = async (mealOrDrink: string, recipeID: string | undefined) => {
-    const requestOptions = constructRequestHeader();
+    const requestOptions = RequestHeader();
     const recipe = await fetch(`http://localhost:3001/${mealOrDrink}/${recipeID}`, requestOptions);
     const recipeJson = await recipe.json();
 
@@ -69,7 +82,20 @@ function FetchAPI() {
   };
 
   const fetchFavorites = async () => {
-    const requestOptions = constructRequestHeader();
+    const requestOptions = RequestHeader();
+    const favorites = await fetch(`http://localhost:3001/favorites/`, requestOptions);
+    const favoritesJson = await favorites.json();
+    
+    if (favorites.status === 401) {
+      navigate('/')
+      return
+    }
+    
+    return favoritesJson;
+  };
+
+  const fetchUpdateFavorites = async (recipeID: number) => {
+    const requestOptions = RequestHeaderUpdateFavorite(recipeID);
     const favorites = await fetch(`http://localhost:3001/favorites`, requestOptions);
     const favoritesJson = await favorites.json();
     
@@ -85,7 +111,8 @@ function FetchAPI() {
     fetchRecipesByCategory,
     fetchDetails,
     fetchCategoriesList,
-    fetchFavorites
+    fetchFavorites,
+    fetchUpdateFavorites
   }
 }
 
