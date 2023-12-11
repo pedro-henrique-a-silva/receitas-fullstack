@@ -22,7 +22,8 @@ const findByCategoryName = async (req, res) => {
 
 const findById = async (req, res) => {
   const { mealsId } = req.params;
-  const meal = await mealsService.findById(mealsId);
+  const { id } = req.user;
+  const meal = await mealsService.findById(mealsId, id);
   return res.status(httpMap[meal.status]).json(meal.message);
 }
 
