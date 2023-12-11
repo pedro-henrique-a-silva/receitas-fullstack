@@ -12,7 +12,6 @@ import { getFromLocalStorage,
   saveToLocalStorage } from '../utils/utilsLocalStorage';
 
 import Message from '../components/Message';
-import { fetchDetails } from '../utils/fetchAPi';
 import RecipeCover from '../components/RecipeCover';
 
 type RecipeInProgressProps = {
@@ -137,12 +136,12 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   };
 
   useEffect(() => {
-    const getDetails = async () => {
-      const details = await fetchDetails(mealOrDrink, recipeID);
-      if (details) {
-        setRecipeDetails(details);
-      }
-    };
+    // const getDetails = async () => {
+    //   const details = await fetchDetails(mealOrDrink, recipeID);
+    //   if (details) {
+    //     setRecipeDetails(details);
+    //   }
+    // };
 
     const recipeInProgressLocalStore = getFromLocalStorage('inProgressRecipes')
     || { meals: {}, drinks: {} };
