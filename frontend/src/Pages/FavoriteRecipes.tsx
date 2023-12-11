@@ -26,7 +26,7 @@ function FavoriteRecipes() {
   };
 
   const handleFavoriteClick = async (recipeId: number) => {
-    const { favorite } = await fetchUpdateFavorites(recipeId)
+    await fetchUpdateFavorites(recipeId)
     setFavoriteRecipes(favoriteRecipes.filter((recipe) => recipe.id !== recipeId))
   };
 
