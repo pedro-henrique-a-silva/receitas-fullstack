@@ -1,4 +1,4 @@
-const { Recipe, Category } = require('../models')
+const { Recipe, Category, Favorite } = require('../models')
 
 const getAll = async () => {
   const allDrinks = await Recipe.findAll({
@@ -33,7 +33,7 @@ const findByCategory = async (name) => {
   return {status: "SUCCESS", messsage: allDrinks}
 }
 
-const findById = async (drinkId) => {
+const findById = async (drinkId, userId) => {
   const drink = await Recipe.findByPk(drinkId, {
     include: { 
       model: Category,
@@ -41,6 +41,12 @@ const findById = async (drinkId) => {
       attributes: [ 'categoryName']
     },
   })
+
+  const favorite = await Favorite.findOne({
+    where: {idUser: userId, idRecipe: drink.id}
+  })
+
+  drink.dataValues.favorite = (favorite) ? true : false
 
   return {status: 'SUCCESS', message: drink}
 }
