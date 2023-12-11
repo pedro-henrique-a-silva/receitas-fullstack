@@ -3,6 +3,11 @@ const { Recipe, Category, Favorite } = require('../models')
 const getAll = async () => {
   const allMeals = await Recipe.findAll({
     where : {recipeType: 'meal'},
+    include: { 
+      model: Category, 
+      as: 'category', 
+      attributes: [ 'categoryName']
+    },
     order: [['strName', 'ASC']]
   })
   return {status: "SUCCESS", message: allMeals}
