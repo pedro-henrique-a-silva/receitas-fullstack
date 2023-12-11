@@ -106,13 +106,41 @@ function FetchAPI() {
     
     return favoritesJson;
   };
+
+  const fetchDones = async () => {
+    const requestOptions = RequestHeader();
+    const dones = await fetch(`http://localhost:3001/done/`, requestOptions);
+    const donesJson = await dones.json();
+    
+    if (dones.status === 401) {
+      navigate('/')
+      return
+    }
+    
+    return donesJson;
+  };
+
+  const fetchUpdateDones = async (recipeID: number) => {
+    const requestOptions = RequestHeaderUpdateFavorite(recipeID);
+    const dones = await fetch(`http://localhost:3001/done`, requestOptions);
+    const donesJson = await dones.json();
+    
+    if (dones.status === 401) {
+      navigate('/')
+      return
+    }
+    
+    return donesJson;
+  };
   return {
     fetchAllRecipes,
     fetchRecipesByCategory,
     fetchDetails,
     fetchCategoriesList,
     fetchFavorites,
-    fetchUpdateFavorites
+    fetchUpdateFavorites,
+    fetchDones,
+    fetchUpdateDones
   }
 }
 
