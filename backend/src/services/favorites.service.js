@@ -22,12 +22,12 @@ const updateFavorites = async (recipeId, userId) => {
       where: {idUser: userId, idRecipe: recipeId}
     })
 
-    return {status: "SUCCESS", message: "favorite removed"}
+    return {status: "SUCCESS", message: { favorite: false }}
   }
 
   const favoriteCreated = Favorite.create({idUser: userId, idRecipe: recipeId})
 
-  return {status: "CREATED", message: "favorite created"}
+  return {status: "CREATED", message: { favorite: true }}
 }
 
 module.exports = {
