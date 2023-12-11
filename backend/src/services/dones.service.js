@@ -1,10 +1,20 @@
-const { User, Recipe, Done } = require('../models') 
+const { User, Recipe, Done, Category } = require('../models') 
 
 const getDones = async (userId) => {
   const dones = await User.findOne({
     attributes: ['id', 'name', 'username'],
     include: [
-      { model: Recipe, through: { attributes: [] }, as: 'recipesDone' }
+      { 
+        model: Recipe, 
+        through: { attributes: [] }, 
+        as: 'recipesDone',
+        include: { 
+          model: Category, 
+          as: 'category', 
+          attributes: [ 'categoryName']
+        },
+      },
+      
     ],
     where: {id: userId}
   })
