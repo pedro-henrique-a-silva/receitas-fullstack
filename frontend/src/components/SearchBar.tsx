@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Radio } from '@mui/material';
-import { MEALS_API_BASE, DRINKS_API_BASE, fetchApi } from '../utils/fetchAPi';
+// import { MEALS_API_BASE, DRINKS_API_BASE, fetchApi } from '../utils/fetchAPi';
 
 const FIRST_LETTER_SEARCH_TYPE = 'First letter';
 

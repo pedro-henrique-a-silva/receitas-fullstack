@@ -1,31 +1,16 @@
 const express = require('express');
-const {drinksModel} = require('../models/index')
+const { drinkController } = require('../controllers');
+const { authMiddleware } = require('../middleware')
 const drinksRouter = express.Router();
 
-drinksRouter.get('/all', async (req, res) => {
-  const allDrinks = await drinksModel.getAll();
+drinksRouter.use(authMiddleware.auth)
 
-  res.status(200).json(allDrinks);
-})
+drinksRouter.get('/all',drinkController.all)
 
-drinksRouter.get('/all/categories', async (req, res) => {
-  const allDrinksCategories = await drinksModel.getAllCategories();
+drinksRouter.get('/all/categories',drinkController.allCategories)
 
-  res.status(200).json(allDrinksCategories);
-})
+drinksRouter.get('/category/:categoryName',drinkController.findByCategoryName)
 
-drinksRouter.get('/category/:categoryId', async (req, res) => {
-  const { categoryId } = req.params;
-  const filteredDrinks = await drinksModel.findByCategory(categoryId);
-
-  res.status(200).json(filteredDrinks);
-})
-
-drinksRouter.get('/:drinksId', async (req, res) => {
-  const { drinksId } = req.params;
-  const drink = await drinksModel.findById(drinksId);
-
-  res.status(200).json(drink);
-})
+drinksRouter.get('/:drinksId', drinkController.findById)
 
 module.exports = drinksRouter;

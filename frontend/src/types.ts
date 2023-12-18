@@ -3,6 +3,12 @@ export type LoginType = {
   password: string;
 };
 
+export type RegisterType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export type Recipe = {
   strThumb: string;
   strName: string;
@@ -15,14 +21,19 @@ export type ContextType = {
   updateRecipes: (recipesData: any[]) => void,
 };
 
+type CategoryName = {
+  categoryName: string
+}
+
 export type DoneRecipeType = {
   id: string,
-  type: string,
-  nationality: string,
-  category: string,
+  recipeType: string,
+  strArea: string,
+  category: CategoryName,
   alcoholicOrNot: string,
-  name: string,
-  image: string,
+  strName: string,
+  strThumb: string,
   doneDate: string,
+  strTags: string[],
   tags: string[]
 };
