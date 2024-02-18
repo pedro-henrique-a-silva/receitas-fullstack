@@ -6,7 +6,7 @@ services:
     container_name: frontend-receita
     tty: true
     stdin_open: true
-    command: npm run dev
+#    command: npm run dev
     restart: always
     working_dir: /app
     volumes:
@@ -20,7 +20,7 @@ services:
     container_name: api-receita
     tty: true
     stdin_open: true
-    command: npm run dev
+    command: npm run start:dev
     restart: always
     working_dir: /home/node/app
     volumes:
@@ -45,6 +45,6 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
-      - 33060:3306
+      - 3306:3306
     # volumes:
     #   - ./receitas.sql:/docker-entrypoint-initdb.d/receitas.sql
