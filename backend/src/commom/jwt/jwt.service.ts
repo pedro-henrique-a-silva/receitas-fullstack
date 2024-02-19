@@ -1,18 +1,24 @@
-import jwt from 'jsonwebtoken';
+import { JwtPayload, Secret, sign, SignOptions, verify } from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
-import { ITokenPayload } from '../../Interfaces/JWT/ITokenPayload';
 
 @Injectable()
 export class JwtService {
-  private secret = process.env.JWT_SECRET || 'secret';
+  private secret: Secret = process.env.JWT_SECRET || 'secret';
 
-  sign(payload: ITokenPayload): string {
-    const token = jwt.sign(payload, this.secret);
-    return token;
+  private jwtConfig: SignOptions = {
+    expiresIn: '1d',
+    algorithm: 'HS256',
+  };
+
+  sign(payload: JwtPayload): string {
+    return sign({ ...payload }, this.secret, this.jwtConfig);
   }
 
-  verify(token: string): ITokenPayload {
-    const data = jwt.verify(token, this.secret) as ITokenPayload;
-    return data;
+  verify(token: string): JwtPayload | string {
+    try {
+      return verify(token, this.secret) as JwtPayload;
+    } catch (error) {
+      return 'Token must be a valid token';
+    }
   }
 }
