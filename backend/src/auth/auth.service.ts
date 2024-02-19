@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../repositories/users/users.service';
+import { IUserLoginDTO } from 'src/Interfaces/users/IUsers';
 
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async auth(username: string, password: string) {
-    const user = await this.usersService.findOne(username, password);
+  async auth(loginData: IUserLoginDTO) {
+    const user = await this.usersService.findOne(loginData);
     if (!user) throw new NotFoundException();
 
     return user;
