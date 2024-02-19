@@ -10,7 +10,7 @@ export class AuthLoginDto {
   password: string;
 }
 
-export class AuthCreateDTO {
+export class SignUpDTO {
   @IsString()
   @IsNotEmpty()
   name: string;
