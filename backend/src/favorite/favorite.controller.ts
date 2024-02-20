@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { AuthGuard } from 'src/common/auth.guard';
-import { RequestWithUserDataJWT } from './interface/favorite.interface';
+import { RequestWithUserDataJWT } from '../Interfaces';
 
 @Controller('favorites')
 export class FavoriteController {
