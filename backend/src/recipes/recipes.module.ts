@@ -3,9 +3,10 @@ import { RecipesService } from './recipes.service';
 import { RecipesController } from './recipes.controller';
 import { RecipesRepository } from './recipes.repository';
 import PrismaModule from '../prisma/prisma.module';
+import CommonModule from '../common/auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, CommonModule],
   providers: [RecipesService, RecipesRepository],
   controllers: [RecipesController],
 })
