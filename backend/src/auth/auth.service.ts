@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { IUserCreateDTO, IUserLoginDTO } from './interfaces/auth.interface';
-import { JwtService } from '../commom/jwt/jwt.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -18,10 +18,11 @@ export class AuthService {
     const user = await this.usersRepository.findOne(loginData);
     if (!user) throw new NotFoundException();
 
-    const token = this.jwtService.sign({
+    const token = await this.jwtService.signAsync({
       name: user.name,
       username: user.username,
     });
+
     return { token };
   }
 
