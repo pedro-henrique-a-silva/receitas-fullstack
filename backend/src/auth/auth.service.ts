@@ -3,19 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersService } from './users.repository';
+import { UsersRepository } from './users.repository';
 import { IUserCreateDTO, IUserLoginDTO } from './interfaces/auth.interface';
 import { JwtService } from '../commom/jwt/jwt.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private usersRepository: UsersRepository,
     private jwtService: JwtService,
   ) {}
 
   async auth(loginData: IUserLoginDTO) {
-    const user = await this.usersService.findOne(loginData);
+    const user = await this.usersRepository.findOne(loginData);
     if (!user) throw new NotFoundException();
 
     const token = this.jwtService.sign({
@@ -26,13 +26,13 @@ export class AuthService {
   }
 
   async signUp(signUpData: IUserCreateDTO) {
-    const user = await this.usersService.findOne({
+    const user = await this.usersRepository.findOne({
       username: signUpData.username,
     });
 
     if (user) throw new ConflictException();
 
-    const userCreated = await this.usersService.create(signUpData);
+    const userCreated = await this.usersRepository.create(signUpData);
 
     return userCreated;
   }
