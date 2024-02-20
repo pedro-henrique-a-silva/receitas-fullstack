@@ -12,6 +12,26 @@ export class RecipesController {
     return recipes;
   }
 
+  @Get(':recipeType/category')
+  async getAllCategories(@Param('recipeType') recipeType: string) {
+    const categories = await this.recipesService.findAllCategories(recipeType);
+
+    return categories;
+  }
+
+  @Get(':recipeType/category/:categoryName')
+  async getAllByCategory(
+    @Param('recipeType') recipeType: string,
+    @Param('categoryName') categoryName: string,
+  ) {
+    const recipesByCategory = await this.recipesService.findByCategory(
+      recipeType,
+      categoryName,
+    );
+
+    return recipesByCategory;
+  }
+
   @Get(':recipeType/:id')
   async getById(
     @Param('recipeType') recipeType: string,
