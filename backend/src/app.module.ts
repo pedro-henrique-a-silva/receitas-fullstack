@@ -5,13 +5,12 @@ import { AuthModule } from './auth/auth.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { JwtModule } from '@nestjs/jwt';
-import { DonesService } from './dones/dones.service';
-import { DonesController } from './dones/dones.controller';
 import { DonesModule } from './dones/dones.module';
 
 @Module({
   imports: [
     FavoriteModule,
+    DonesModule,
     AuthModule,
     RecipesModule,
     JwtModule.register({
@@ -19,9 +18,8 @@ import { DonesModule } from './dones/dones.module';
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '1d', algorithm: 'HS256' },
     }),
-    DonesModule,
   ],
-  controllers: [AppController, DonesController],
-  providers: [AppService, DonesService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
