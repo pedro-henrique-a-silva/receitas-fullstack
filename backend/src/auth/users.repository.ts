@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IUserRepositore } from './interfaces/IUserRepositore';
+import { IUserRepositore } from './interfaces/IUserRepository';
 import { Prisma } from '@prisma/client';
 
-export class UsersService implements IUserRepositore {
+@Injectable()
+export class UsersRepository implements IUserRepositore {
   constructor(private prisma: PrismaService) {}
 
   async findOne(searchData: Prisma.UserWhereInput) {
