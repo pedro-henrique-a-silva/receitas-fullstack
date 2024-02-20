@@ -3,8 +3,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersService } from '../repositories/users/users.service';
-import { IUserCreateDTO, IUserLoginDTO } from 'src/Interfaces/users/IUsers';
+import { UsersService } from './users.repository';
+import { IUserCreateDTO, IUserLoginDTO } from './interfaces/auth.interface';
 import { JwtService } from '../commom/jwt/jwt.service';
 
 @Injectable()
