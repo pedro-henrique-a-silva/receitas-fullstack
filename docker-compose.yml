@@ -2,29 +2,32 @@ version: '3'
 
 services:
   frontend:
-    image: node:18
+    build: ./frontend
     container_name: frontend-receita
     tty: true
     stdin_open: true
-    command: npm run dev
+    command: run dev
     restart: always
     working_dir: /app
     volumes:
-      - ./frontend/:/app
+      - ./frontend/src:/app/src
+      - ./frontend/tests:/app/tests
     depends_on:
       - backend
     ports:
       - 3000:3000
   backend:
-    image: node:18
+    build: ./backend
     container_name: api-receita
     tty: true
     stdin_open: true
-    command: npm run start
+    command: start
     restart: always
-    working_dir: /home/node/app
+    working_dir: /app
     volumes:
-      - ./backend/:/home/node/app
+      - ./backend/src:/app/src
+      - ./backend/test:/app/test
+      - ./backend/prisma:/app/prisma
     depends_on:
       database:
         condition: service_healthy
@@ -52,5 +55,3 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
       retries: 5
-    # volumes:
-    #   - ./receitas.sql:/docker-entrypoint-initdb.d/receitas.sql
