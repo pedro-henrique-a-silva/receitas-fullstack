@@ -15,8 +15,8 @@ export class RecipesRepository implements IRecipeRepository {
     return recipes;
   }
 
-  findById(id: number, type: string) {
-    const recipe = this.prisma.recipe.findUnique({
+  async findById(id: number, type: string) {
+    const recipe = await this.prisma.recipe.findUnique({
       where: { id: id, recipeType: type },
     });
 
