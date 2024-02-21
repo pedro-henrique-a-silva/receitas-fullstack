@@ -12,4 +12,8 @@ app.use('/user', routes.userRouter);
 app.use('/favorites', routes.favoritesRouter);
 app.use('/done', routes.doneRouter);
 
+app.get('/healthy', (req, res) => {
+  res.status(200).send('estou vivo')
+})
+
 module.exports = app;
