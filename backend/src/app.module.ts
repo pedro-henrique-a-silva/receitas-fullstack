@@ -6,6 +6,7 @@ import { RecipesModule } from './recipes/recipes.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { JwtModule } from '@nestjs/jwt';
 import { DonesModule } from './dones/dones.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { DonesModule } from './dones/dones.module';
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '1d', algorithm: 'HS256' },
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
