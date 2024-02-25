@@ -21,7 +21,7 @@ services:
     container_name: api-receita
     tty: true
     stdin_open: true
-    command: start
+    command: run start:dev
     restart: always
     working_dir: /app
     volumes:
