@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+
 const prisma = new PrismaClient();
 
 export default async function userSeed() {
@@ -8,13 +10,15 @@ export default async function userSeed() {
         id: 1,
         name: 'user01',
         username: 'email@email.com',
-        password: '123456',
+        password: await bcrypt.hash('123456', 10),
+        // password: '123456',
       },
       {
         id: 2,
         name: 'user02',
         username: 'email2@email.com',
-        password: '123456',
+        password: await bcrypt.hash('123456', 10),
+        // password: '123456',
       },
     ],
   });
