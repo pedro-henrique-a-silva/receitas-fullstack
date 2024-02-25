@@ -1,12 +1,12 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
-import { AuthGuard } from '../common/auth.guard';
+import { JWTGuard } from '../common/jwt/jwt.guard';
 
 @Controller('')
 export class RecipesController {
   constructor(private recipesService: RecipesService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get(':recipeType')
   async getAll(@Param('recipeType') recipeType: string) {
     const recipes = await this.recipesService.findAll(recipeType);
@@ -14,7 +14,7 @@ export class RecipesController {
     return recipes;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get(':recipeType/category')
   async getAllCategories(@Param('recipeType') recipeType: string) {
     const categories = await this.recipesService.findAllCategories(recipeType);
@@ -22,7 +22,7 @@ export class RecipesController {
     return categories;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get(':recipeType/category/:categoryName')
   async getAllByCategory(
     @Param('recipeType') recipeType: string,
@@ -36,7 +36,7 @@ export class RecipesController {
     return recipesByCategory;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get(':recipeType/:id')
   async getById(
     @Param('recipeType') recipeType: string,

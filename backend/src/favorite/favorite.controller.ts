@@ -9,21 +9,21 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
-import { AuthGuard } from 'src/common/auth.guard';
+import { JWTGuard } from '../common/jwt/jwt.guard';
 import { RequestWithUserDataJWT } from '../Interfaces';
 
 @Controller('favorites')
 export class FavoriteController {
   constructor(private favoriteService: FavoriteService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get(':id')
   async getFavorites(@Param('id') id: string) {
     const favorites = await this.favoriteService.getFavorites(Number(id));
     return favorites;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @HttpCode(200)
   @Post(':id')
   async updateFavorite(
