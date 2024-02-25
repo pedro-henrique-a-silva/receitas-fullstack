@@ -1,10 +1,10 @@
-import { IRecipeRepository } from './interface/IRecipesRepository';
+import { RecipeRepository } from './interface/RecipesRepository';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Categorie, Recipe } from '@prisma/client';
 
 @Injectable()
-export class RecipesRepository implements IRecipeRepository {
+export class PrismaRecipesRepository implements RecipeRepository {
   constructor(private prisma: PrismaService) {}
 
   async findAll(type: string) {

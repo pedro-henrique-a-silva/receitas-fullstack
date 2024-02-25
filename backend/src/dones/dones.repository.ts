@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDonesRepository } from './interfaces/IDonesRepository';
+import DonesRepository from './interfaces/DonesRepository';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AllUserDones } from './interfaces/dones.interface';
 
 @Injectable()
-export default class DonesRepository implements IDonesRepository {
+export default class PrismaDonesRepository implements DonesRepository {
   constructor(private prisma: PrismaService) {}
 
   async getDones(id: number): Promise<AllUserDones | null> {
