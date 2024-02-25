@@ -16,16 +16,17 @@ services:
       - backend
     ports:
       - 3000:3000
-  backend:
-    build: ./backend
-    container_name: api-receita
+  backend-sequelize:
+    build: ./backend-sequelize-ts
+    container_name: api-receita-sequelize
     tty: true
     stdin_open: true
     command: npm run dev
     restart: always
     working_dir: /app
     volumes:
-      - ./backend/:/home/node/app
+      - ./backend-sequelize-ts/src:/app/src
+      - ./backend-sequelize-ts/tests:/app/tests
     depends_on:
       database:
         condition: service_healthy
@@ -41,6 +42,33 @@ services:
       PORT: ${PORT}
       JWT_SECRET: ${JWT_SECRET}
   
+  backend-nest:
+    build: ./backend-nest
+    container_name: api-receita-nest
+    tty: true
+    stdin_open: true
+    command: npm run dev
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./backend-nest/src:/app/src
+      - ./backend-nest/test:/app/test
+      - ./backend-nest/prisma:/app/prisma
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - 3001:3001
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_HOST: ${MYSQL_HOST}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${PORT}
+      JWT_SECRET: ${JWT_SECRET}
+
   database:
     image: mysql:8.0.29
     container_name: receitas_db
