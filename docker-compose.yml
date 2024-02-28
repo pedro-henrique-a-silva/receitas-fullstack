@@ -21,7 +21,7 @@ services:
     container_name: api-receita-sequelize
     tty: true
     stdin_open: true
-    command: npm run dev
+    command: run dev
     restart: always
     working_dir: /app
     volumes:
@@ -33,38 +33,37 @@ services:
     ports:
       - 3001:3001
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_PORT: ${MYSQL_PORT}
-      MYSQL_HOST: ${MYSQL_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
       DATABASE_URL: ${DATABASE_URL}
       PORT: ${PORT}
       JWT_SECRET: ${JWT_SECRET}
   
   backend-nest:
-    build: ./backend-nest
+    build: ./backend-nest-ts
     container_name: api-receita-nest
     tty: true
     stdin_open: true
-    command: npm run dev
+    command: run start:dev
     restart: always
     working_dir: /app
     volumes:
-      - ./backend-nest/src:/app/src
-      - ./backend-nest/test:/app/test
-      - ./backend-nest/prisma:/app/prisma
+      - ./backend-nest-ts/src:/app/src
+      - ./backend-nest-ts/test:/app/test
     depends_on:
       database:
         condition: service_healthy
     ports:
       - 3001:3001
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_PORT: ${MYSQL_PORT}
-      MYSQL_HOST: ${MYSQL_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
       DATABASE_URL: ${DATABASE_URL}
       PORT: ${PORT}
       JWT_SECRET: ${JWT_SECRET}
@@ -74,8 +73,10 @@ services:
     container_name: receitas_db
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DB_NAME: ${DB_NAME}
     ports:
-      - 33060:3306
+      - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
     # volumes:
     #   - ./receitas.sql:/docker-entrypoint-initdb.d/receitas.sql
