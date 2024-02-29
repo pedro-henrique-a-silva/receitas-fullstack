@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Categorie, Recipe } from '@prisma/client';
+import { Category, Recipe } from '@prisma/client';
 import { RecipeRepository } from './interface/RecipesRepository';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class RecipesService {
 
   async findAllCategories(
     recipeType: string,
-  ): Promise<Promise<Pick<Categorie, 'categoryName'>[]>> {
+  ): Promise<Promise<Pick<Category, 'categoryName'>[]>> {
     const categories =
       await this.recipesRepository.findAllCategories(recipeType);
 
