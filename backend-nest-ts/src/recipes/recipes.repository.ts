@@ -1,7 +1,7 @@
 import { RecipeRepository } from './interface/RecipesRepository';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Categorie, Recipe } from '@prisma/client';
+import { Category, Recipe } from '@prisma/client';
 
 @Injectable()
 export class PrismaRecipesRepository implements RecipeRepository {
@@ -25,8 +25,8 @@ export class PrismaRecipesRepository implements RecipeRepository {
 
   async findAllCategories(
     recipeType: string,
-  ): Promise<Pick<Categorie, 'categoryName'>[]> {
-    const categories = await this.prisma.categorie.findMany({
+  ): Promise<Pick<Category, 'categoryName'>[]> {
+    const categories = await this.prisma.category.findMany({
       select: { categoryName: true },
       where: { categoryType: recipeType },
     });
