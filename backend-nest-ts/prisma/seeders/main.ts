@@ -3,7 +3,8 @@ import userSeed from './users.seed';
 import categorySeed from './category.seed';
 import recipeSeed from './recipe.seed';
 import favoriteSeed from './favorites.seed';
-import doneSeed from './dones.see';
+import doneSeed from './dones.seed';
+import ingredientsSeed from './ingredients.seed';
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,7 @@ async function main() {
   await userSeed();
   await categorySeed();
   await recipeSeed();
+  await ingredientsSeed();
   await favoriteSeed();
   await doneSeed();
 }
