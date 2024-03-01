@@ -1,6 +1,7 @@
-import express from 'express';
+import * as express from 'express';
+import { Request, Response } from 'express';
 import 'express-async-errors';
-// import router from './router';
+import router from './routes';
 
 class App {
   public app: express.Express;
@@ -10,13 +11,13 @@ class App {
 
     this.config();
 
-    this.app.get('/', (_req, res) => res.send('to vivo'));
+    this.app.get('/', (req: Request, res: Response) => res.send('to vivo.'));
 
     this.routes();
   }
 
   private routes(): void {
-    // this.app.use(router);
+    this.app.use(router);
   }
 
   private config():void {
@@ -38,4 +39,4 @@ class App {
 
 export { App };
 
-// export const { app } = new App();s
+export const { app } = new App();
