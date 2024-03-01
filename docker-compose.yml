@@ -73,7 +73,7 @@ services:
     container_name: receitas_db
     environment:
       MYSQL_ROOT_PASSWORD: password
-      DB_NAME: ${DB_NAME}
+      MYSQL_DB_NAME: ${DB_NAME}
     ports:
       - 3306:3306
     healthcheck:
