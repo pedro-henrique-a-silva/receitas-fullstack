@@ -27,8 +27,8 @@ SequelizeIngredient.init({
   recipeId: {
     allowNull: false,
     references: {
-      model: "recipes",
-      key: "id"
+      model: 'recipes',
+      key: 'id',
     },
     type: DataTypes.INTEGER,
   },
@@ -52,9 +52,14 @@ SequelizeIngredient.init({
   underscored: true,
 });
 
-SequelizeIngredient.belongsTo(SequelizeRecipe, { 
-  foreignKey: 'recipeId', 
-  as: 'recipe' 
+SequelizeIngredient.belongsTo(SequelizeRecipe, {
+  foreignKey: 'recipeId',
+  as: 'recipe',
+});
+
+SequelizeRecipe.hasMany(SequelizeIngredient, {
+  foreignKey: 'recipeId',
+  as: 'ingredients',
 });
 
 export default SequelizeIngredient;
