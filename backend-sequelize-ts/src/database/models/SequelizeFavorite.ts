@@ -3,7 +3,6 @@ import {
   Model,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
 } from 'sequelize';
 import db from '.';
 
@@ -12,8 +11,8 @@ import SequelizeRecipe from './SequelizeRecipe';
 
 class SequelizeFavorite extends Model<InferAttributes<SequelizeFavorite>,
 InferCreationAttributes<SequelizeFavorite>> {
-  declare userId: string;
-  declare recipeId: string;
+  declare userId: number;
+  declare recipeId: number;
 }
 
 SequelizeFavorite.init({
@@ -25,7 +24,7 @@ SequelizeFavorite.init({
       model: 'users',
       key: 'id',
     },
-    onDelete: 'CASCADE', 
+    onDelete: 'CASCADE',
   },
   recipeId: {
     allowNull: false,
@@ -35,7 +34,7 @@ SequelizeFavorite.init({
       model: 'recipes',
       key: 'id',
     },
-    onDelete: 'CASCADE', 
+    onDelete: 'CASCADE',
   },
 }, {
   sequelize: db,
@@ -46,16 +45,16 @@ SequelizeFavorite.init({
 
 SequelizeUser.belongsToMany(SequelizeRecipe, {
   through: SequelizeFavorite,
-  foreignKey: "userId",
-  otherKey: "recipeId",
-  as: "recipes"
+  foreignKey: 'userId',
+  otherKey: 'recipeId',
+  as: 'favoriteRecipes',
 });
 
 SequelizeRecipe.belongsToMany(SequelizeUser, {
   through: SequelizeFavorite,
-  foreignKey: "recipeId",
-  otherKey: "userId",
-  as: "users"
+  foreignKey: 'recipeId',
+  otherKey: 'userId',
+  as: 'users',
 });
 
 export default SequelizeFavorite;
