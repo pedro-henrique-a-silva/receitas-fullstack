@@ -5,3 +5,5 @@ export interface IUser extends Identifiable {
   username: string;
   password: string; 
 }
+
+export interface CreateUser extends Omit<IUser, 'id'> {}
