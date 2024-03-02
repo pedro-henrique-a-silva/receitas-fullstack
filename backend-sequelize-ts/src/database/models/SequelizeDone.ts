@@ -3,7 +3,6 @@ import {
   Model,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
 } from 'sequelize';
 import db from '.';
 
@@ -12,8 +11,8 @@ import SequelizeRecipe from './SequelizeRecipe';
 
 class SequelizeDone extends Model<InferAttributes<SequelizeDone>,
 InferCreationAttributes<SequelizeDone>> {
-  declare userId: string;
-  declare reciepId: string;
+  declare userId: number;
+  declare recipeId: number;
 }
 
 SequelizeDone.init({
@@ -25,9 +24,9 @@ SequelizeDone.init({
       model: 'users',
       key: 'id',
     },
-    onDelete: 'CASCADE', 
+    onDelete: 'CASCADE',
   },
-  reciepId: {
+  recipeId: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.INTEGER,
@@ -35,7 +34,7 @@ SequelizeDone.init({
       model: 'recipes',
       key: 'id',
     },
-    onDelete: 'CASCADE', 
+    onDelete: 'CASCADE',
   },
 }, {
   sequelize: db,
@@ -46,16 +45,16 @@ SequelizeDone.init({
 
 SequelizeUser.belongsToMany(SequelizeRecipe, {
   through: SequelizeDone,
-  foreignKey: "userId",
-  otherKey: "recipeId",
-  as: "recipesDone"
+  foreignKey: 'userId',
+  otherKey: 'recipeId',
+  as: 'recipesDone',
 });
 
 SequelizeRecipe.belongsToMany(SequelizeUser, {
   through: SequelizeDone,
-  foreignKey: "recipeId",
-  otherKey: "userId",
-  as: "usersDone"
+  foreignKey: 'recipeId',
+  otherKey: 'userId',
+  as: 'usersDone',
 });
 
 export default SequelizeDone;
