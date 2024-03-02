@@ -37,10 +37,14 @@ SequelizeCategory.init({
   underscored: true,
 });
 
-
 SequelizeCategory.hasMany(SequelizeRecipe, {
-  foreignKey: 'idCategory',
-  as: 'category'
+  foreignKey: 'categoryId',
+  as: 'recipes',
+});
+
+SequelizeRecipe.belongsTo(SequelizeCategory, {
+  foreignKey: 'categoryId',
+  as: 'category',
 });
 
 export default SequelizeCategory;
