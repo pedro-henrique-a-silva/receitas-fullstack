@@ -6,7 +6,6 @@ import {
   CreationOptional,
 } from 'sequelize';
 import db from '.';
-import SequelizeIngredient from './SequelizeIngredient';
 
 class SequelizeRecipe extends Model<InferAttributes<SequelizeRecipe>,
 InferCreationAttributes<SequelizeRecipe>> {
@@ -21,64 +20,58 @@ InferCreationAttributes<SequelizeRecipe>> {
   declare strThumb: string;
   declare strTags: string;
   declare strYoutube: string;
-  
 }
 
 SequelizeRecipe.init({
   id: {
     primaryKey: true,
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
   strName: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   categoryId: {
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
-      model: "categories",
-      key: "id"
+      model: 'categories',
+      key: 'id',
     },
-    onDelete: "CASCADE"
+    onDelete: 'CASCADE',
   },
   recipeType: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strAlcoholic: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strGlass: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strArea: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strInstructions: {
     allowNull: false,
-    type: DataTypes.TEXT
+    type: DataTypes.TEXT,
   },
   strThumb: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strTags: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   strYoutube: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
 }, {
   sequelize: db,
   modelName: 'recipes',
   timestamps: false,
   underscored: true,
-});
-
-SequelizeRecipe.hasMany(SequelizeIngredient, { 
-  foreignKey: 'recipeId', 
-  as: 'ingredients'
 });
 
 export default SequelizeRecipe;
