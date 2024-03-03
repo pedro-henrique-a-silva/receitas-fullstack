@@ -1,6 +1,6 @@
 import { CreateUser, IUser } from '../interfaces/user/IUser';
 import IUserModel from '../interfaces/user/IUserModel';
-import UserModel from '../model/UserModel';
+import UserModel from '../model/sequelize/UserModel';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
 import HashService from '../interfaces/IHash';

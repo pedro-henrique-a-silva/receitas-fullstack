@@ -1,7 +1,7 @@
 import IUserModel from '../interfaces/user/IUserModel';
 import IDonesModel from '../interfaces/dones/IDonesModel';
-import DoneModel from '../model/DoneModel';
-import UserModel from '../model/UserModel';
+import DoneModel from '../model/sequelize/DoneModel';
+import UserModel from '../model/sequelize/UserModel';
 
 export default class DoneService {
   constructor(

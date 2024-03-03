@@ -1,8 +1,8 @@
 import { ServiceResponse } from '../interfaces/ServiceResponse';
 import IUserModel from '../interfaces/user/IUserModel';
 import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
-import FavoriteModel from '../model/FavoriteModel';
-import UserModel from '../model/UserModel';
+import FavoriteModel from '../model/sequelize/FavoriteModel';
+import UserModel from '../model/sequelize/UserModel';
 
 export default class FavoriteService {
   constructor(

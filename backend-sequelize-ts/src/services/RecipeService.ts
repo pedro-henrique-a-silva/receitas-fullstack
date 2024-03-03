@@ -1,10 +1,12 @@
 import { IRecipeModel } from '../interfaces/recipe/IRecipeModel';
 import { ICategory } from '../interfaces/category/ICategory';
-import { IRecipe } from '../interfaces/recipe/IRecipe';
+import { IRecipe, IRecipeWithFavorite } from '../interfaces/recipe/IRecipe';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
-import RecipeModel from '../model/RecipeModel';
+import RecipeModel from '../model/sequelize/RecipeModel';
+// import RecipeModel from '../model/prisma/RecipeModel';
 import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
-import FavoriteModel from '../model/FavoriteModel';
+import FavoriteModel from '../model/sequelize/FavoriteModel';
+// import FavoriteModel from '../model/prisma/FavoriteModel';
 
 export default class RecipesService {
   constructor(
@@ -18,16 +20,14 @@ export default class RecipesService {
     return { status: 'SUCCESSFUL', data: recipes };
   }
 
-  async findById(id: number): Promise<ServiceResponse<IRecipe>> {
-    const recipe = await this.recipeModel.findById(id);
+  async findById(recipeId: number, userId: number): Promise<ServiceResponse<IRecipeWithFavorite>> {
+    const recipe = await this.recipeModel.findById(recipeId);
 
     if (!recipe) return { status: 'NOT_FOUND', data: { message: 'erro' } };
 
-    const favorite = await this.favoriteModel.getOneFavorite(recipe.id, id);
+    const favorite = await this.favoriteModel.getOneFavorite(recipe.id, userId);
 
-    recipe.favorite = !!(favorite);
-
-    return { status: 'SUCCESSFUL', data: recipe };
+    return { status: 'SUCCESSFUL', data: { ...recipe, favorite: Boolean(favorite) } };
   }
 
   async findAllCategories(
