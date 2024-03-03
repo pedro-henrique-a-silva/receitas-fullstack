@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(100)
+  username        String            @db.VarChar(100)
+  password        String            @db.VarChar(100)
+  favoriteRecipes FavoriteRecipes[]
+  doneRecipes     DoneRecipes[]
+
+  @@map("users")
+}
+
+model Category {
+  id           Int      @id @default(autoincrement())
+  categoryName String   @map("category_name") @db.VarChar(100)
+  categoryType String   @map("category_type") @db.VarChar(100)
+  recipe       Recipe[]
+
+  @@map("categories")
+}
+
+model Ingredient {
+  id         Int     @id @default(autoincrement())
+  recipe     Recipe  @relation(fields: [recipeId], references: [id])
+  ingredient String
+  order      Int
+  measure    String?
+  recipeId   Int     @map("recipe_id")
+
+  @@map("ingredients")
+}
+
+model Recipe {
+  id              Int               @id @default(autoincrement())
+  strName         String            @map("str_name")
+  category        Category          @relation(fields: [categoryId], references: [id])
+  categoryId      Int               @map("category_id")
+  recipeType      String            @map("recipe_type")
+  strAlcoholic    String?           @map("str_alcoholic")
+  strGlass        String?           @map("str_glass")
+  strArea         String?           @map("str_area")
+  strInstructions String            @map("str_instructions") @db.Text
+  strThumb        String            @map("str_thumb")
+  strTags         String?           @map("str_tags")
+  strYoutube      String?           @map("str_youtube")
+  favoriteRecipes FavoriteRecipes[]
+  doneRecipes     DoneRecipes[]
+  ingredients     Ingredient[]
+
+  @@map("recipes")
+}
+
+model FavoriteRecipes {
+  user     User   @relation(fields: [userId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  userId   Int    @map("user_id")
+  recipeId Int    @map("recipe_id")
+
+  @@id([userId, recipeId])
+  @@map("favorite")
+}
+
+model DoneRecipes {
+  user     User   @relation(fields: [userId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  userId   Int    @map("user_id")
+  recipeId Int    @map("recipe_id")
+
+  @@id([userId, recipeId])
+  @@map("dones")
+}
