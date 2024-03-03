@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import RecipesService from '../services/RecipeService';
 import mapStatusHTTP from '../utils/httpMap';
+import { RequestWithUser } from '../interfaces';
 
 export default class RecipeController {
   constructor(private recipesService: RecipesService = new RecipesService()) { }
@@ -33,10 +34,11 @@ export default class RecipeController {
     return res.status(statusCode).json(data);
   }
 
-  async getById(req: Request, res: Response) {
-    const { id } = req.params;
+  async getById(req: RequestWithUser, res: Response) {
+    const userId = req.user?.id;
+    const { recipeId } = req.params;
 
-    const { status, data } = await this.recipesService.findById(Number(id));
+    const { status, data } = await this.recipesService.findById(Number(recipeId), Number(userId));
 
     const statusCode = mapStatusHTTP(status);
 
