@@ -10,7 +10,7 @@ export default class UserController {
   async login(req: Request, res: Response) {
     const { username, password } = req.body;
 
-    const { status, data } = await this.userService.findByUsername(username);
+    const { status, data } = await this.userService.findByUsername(username, password);
 
     const statusCode = mapStatusHTTP(status);
 
