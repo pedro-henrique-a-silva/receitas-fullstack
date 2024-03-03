@@ -10,14 +10,14 @@ export default {
         id: 1, 
         name: "user01" , 
         username: 'email@email.com', 
-        password: hashService.hash('123456')
+        password: await hashService.hash('123456')
         // password: '123456'
       },
       { 
         id: 2, 
         name: "user02", 
         username: 'email2@email.com', 
-        password: hashService.hash('123456')
+        password: await hashService.hash('123456')
         // password: '123456'
       },
      ]);
