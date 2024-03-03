@@ -8,7 +8,6 @@
     "start": "npx ts-node src/server.ts",
     "db:reset": "npx -y tsc && npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate",
     "db:seed": "npx sequelize db:seed:all",
-    "predev": "npx -y tsc && npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all",
     "dev": "ts-node-dev src/server.ts",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json .",
     "test": "mocha tests/**/*.test.ts --exit"
@@ -17,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.10.2",
     "bcrypt": "^5.1.1",
     "camelize": "^1.0.1",
     "cors": "^2.8.5",
@@ -48,5 +48,8 @@
     "prisma": "^5.10.2",
     "sequelize-cli": "^6.6.2",
     "sinon": "^14.0.0"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seeders/main.ts"
   }
 }
