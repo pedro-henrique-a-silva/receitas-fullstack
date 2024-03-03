@@ -4,6 +4,7 @@ src/database/seeders
 src/database/migrations
 src/database/config
 src/database/models/index.ts
+prisma/seeders
 
 tests/
 build/
