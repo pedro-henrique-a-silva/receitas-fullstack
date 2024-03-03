@@ -1,6 +1,6 @@
-import { IUser, CreateUser } from '../interfaces/user/IUser';
-import IUserModel from '../interfaces/user/IUserModel';
-import SequelizeUser from '../database/models/SequelizeUser';
+import { IUser, CreateUser } from '../../interfaces/user/IUser';
+import IUserModel from '../../interfaces/user/IUserModel';
+import SequelizeUser from '../../database/models/SequelizeUser';
 
 export default class UserModel implements IUserModel {
   private userModel = SequelizeUser;

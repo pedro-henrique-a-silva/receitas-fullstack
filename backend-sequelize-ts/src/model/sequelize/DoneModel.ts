@@ -1,9 +1,9 @@
-import SequelizeDone from '../database/models/SequelizeDone';
-import SequelizeCategory from '../database/models/SequelizeCategory';
-import SequelizeRecipe from '../database/models/SequelizeRecipe';
-import SequelizeUser from '../database/models/SequelizeUser';
-import { AllUserDones, IDones } from '../interfaces/dones/IDones';
-import IDonesModel from '../interfaces/dones/IDonesModel';
+import SequelizeDone from '../../database/models/SequelizeDone';
+import SequelizeCategory from '../../database/models/SequelizeCategory';
+import SequelizeRecipe from '../../database/models/SequelizeRecipe';
+import SequelizeUser from '../../database/models/SequelizeUser';
+import { AllUserDones, IDones } from '../../interfaces/dones/IDones';
+import IDonesModel from '../../interfaces/dones/IDonesModel';
 
 export default class DoneModel implements IDonesModel {
   private userModel = SequelizeUser;
@@ -29,7 +29,7 @@ export default class DoneModel implements IDonesModel {
     return dones as never as AllUserDones;
   }
 
-  async updateDones(recipeId: number, userId: number): Promise<IDones | null> {
+  async updateDones(recipeId: number, userId: number): Promise<void> {
     const done = await this.doneModel.findOne({
       where: { userId, recipeId },
     });
@@ -39,11 +39,9 @@ export default class DoneModel implements IDonesModel {
         where: { userId, recipeId },
       });
 
-      return null;
+      return;
     }
 
-    const doneCreated = this.doneModel.create({ userId, recipeId });
-
-    return doneCreated;
+    await this.doneModel.create({ userId, recipeId });
   }
 }

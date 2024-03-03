@@ -1,8 +1,8 @@
-import { AllUserFavorites, IFavorite } from '../interfaces/favorite/IFavorite';
-import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
-import SequelizeFavorite from '../database/models/SequelizeFavorite';
-import SequelizeUser from '../database/models/SequelizeUser';
-import SequelizeRecipe from '../database/models/SequelizeRecipe';
+import { AllUserFavorites, IFavorite } from '../../interfaces/favorite/IFavorite';
+import IFavoriteModel from '../../interfaces/favorite/IFavoriteModel';
+import SequelizeFavorite from '../../database/models/SequelizeFavorite';
+import SequelizeUser from '../../database/models/SequelizeUser';
+import SequelizeRecipe from '../../database/models/SequelizeRecipe';
 
 export default class FavoriteModel implements IFavoriteModel {
   private favoriteModel = SequelizeFavorite;
@@ -20,7 +20,7 @@ export default class FavoriteModel implements IFavoriteModel {
     return favorites?.dataValues as never as AllUserFavorites;
   }
 
-  async updateFavorites(recipeId: number, userId: number): Promise<IFavorite | null> {
+  async updateFavorites(recipeId: number, userId: number): Promise<void> {
     const favorite = await this.favoriteModel.findOne({
       where: { userId, recipeId },
     });
@@ -30,15 +30,13 @@ export default class FavoriteModel implements IFavoriteModel {
         where: { userId, recipeId },
       });
 
-      return null;
+      return;
     }
 
-    const favoriteCreated = await this.favoriteModel.create({
+    await this.favoriteModel.create({
       userId,
       recipeId,
     });
-
-    return favoriteCreated;
   }
 
   async getOneFavorite(recipeId: number, userId: number): Promise<IFavorite | null> {
