@@ -1,9 +1,9 @@
-import { Identifiable } from "..";
+import { Identifiable } from '..';
 
 export interface IUser extends Identifiable {
   name: string;
   username: string;
-  password: string; 
+  password: string;
 }
 
-export interface CreateUser extends Omit<IUser, 'id'> {}
+export type CreateUser = Omit<IUser, 'id'>;
