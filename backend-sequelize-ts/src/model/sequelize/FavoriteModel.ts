@@ -28,7 +28,7 @@ export default class FavoriteModel implements IFavoriteModel {
     return { ...restDones, favoriteRecipes: newRecipeList };
   }
 
-  async updateFavorites(recipeId: number, userId: number): Promise<void> {
+  async updateFavorites(recipeId: number, userId: number): Promise<boolean> {
     const favorite = await this.favoriteModel.findOne({
       where: { userId, recipeId },
     });
@@ -38,13 +38,14 @@ export default class FavoriteModel implements IFavoriteModel {
         where: { userId, recipeId },
       });
 
-      return;
+      return false;
     }
 
     await this.favoriteModel.create({
       userId,
       recipeId,
     });
+    return true;
   }
 
   async getOneFavorite(recipeId: number, userId: number): Promise<IFavorite | null> {

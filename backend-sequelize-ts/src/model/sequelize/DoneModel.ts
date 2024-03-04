@@ -24,7 +24,7 @@ export default class DoneModel implements IDonesModel {
     return { ...restDones, doneRecipes: newRecipeList };
   }
 
-  async updateDones(recipeId: number, userId: number): Promise<void> {
+  async updateDones(recipeId: number, userId: number): Promise<boolean> {
     const done = await this.doneModel.findOne({
       where: { userId, recipeId },
     });
@@ -34,10 +34,11 @@ export default class DoneModel implements IDonesModel {
         where: { userId, recipeId },
       });
 
-      return;
+      return false;
     }
 
     await this.doneModel.create({ userId, recipeId });
+    return true;
   }
 
   static responseRecipeList(recipe: IRecipeWithCategoryFromModel) {
