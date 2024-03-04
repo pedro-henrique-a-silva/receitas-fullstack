@@ -21,15 +21,14 @@ export default class FavoriteService {
     recipeId: number,
     userId: number,
     username: string,
-  ): Promise<ServiceResponse<{ message: string }>> {
+  ): Promise<ServiceResponse<{ message: boolean }>> {
     const user = await this.userModel.findByUsername(username);
 
     if (!user || user.id !== userId) {
       return { status: 'UNAUTHORIZED', data: { message: 'unauthorized' } };
     }
 
-    await this.favoriteModel.updateFavorites(recipeId, userId);
-
-    return { status: 'SUCCESSFUL', data: { message: 'favorited' } };
+    const isFavorited = await this.favoriteModel.updateFavorites(recipeId, userId);
+    return { status: 'SUCCESSFUL', data: { message: isFavorited } };
   }
 }

@@ -27,8 +27,8 @@ export default class DoneService {
       return { status: 'UNAUTHORIZED', data: { message: 'unauthorized' } };
     }
 
-    await this.doneModel.updateDones(recipeId, userId);
+    const isFavorited = await this.doneModel.updateDones(recipeId, userId);
 
-    return { status: 'SUCCESSFUL', data: { message: 'favorited' } };
+    return { status: 'SUCCESSFUL', data: { message: isFavorited } };
   }
 }
