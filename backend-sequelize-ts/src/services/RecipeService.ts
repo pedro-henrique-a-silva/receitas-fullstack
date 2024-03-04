@@ -2,9 +2,9 @@ import { IRecipeModel } from '../interfaces/recipe/IRecipeModel';
 import { ICategory } from '../interfaces/category/ICategory';
 import { IRecipe, IRecipeWithFavorite } from '../interfaces/recipe/IRecipe';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
+import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
 import RecipeModel from '../model/sequelize/RecipeModel';
 // import RecipeModel from '../model/prisma/RecipeModel';
-import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
 import FavoriteModel from '../model/sequelize/FavoriteModel';
 // import FavoriteModel from '../model/prisma/FavoriteModel';
 
@@ -24,7 +24,6 @@ export default class RecipesService {
     const recipe = await this.recipeModel.findById(recipeId);
 
     if (!recipe) return { status: 'NOT_FOUND', data: { message: 'erro' } };
-
     const favorite = await this.favoriteModel.getOneFavorite(recipe.id, userId);
 
     return { status: 'SUCCESSFUL', data: { ...recipe, favorite: Boolean(favorite) } };

@@ -1,7 +1,9 @@
 import IUserModel from '../interfaces/user/IUserModel';
 import IDonesModel from '../interfaces/dones/IDonesModel';
 import DoneModel from '../model/sequelize/DoneModel';
+// import DoneModel from '../model/prisma/DoneModel';
 import UserModel from '../model/sequelize/UserModel';
+// import UserModel from '../model/prisma/UserModel';
 
 export default class DoneService {
   constructor(
