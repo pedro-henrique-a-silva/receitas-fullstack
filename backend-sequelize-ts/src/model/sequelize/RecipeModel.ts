@@ -7,6 +7,7 @@ import { IRecipeModel } from '../../interfaces/recipe/IRecipeModel';
 
 import SequelizeRecipe from '../../database/models/SequelizeRecipe';
 import SequelizeCategory from '../../database/models/SequelizeCategory';
+import SequelizeIngredient from '../../database/models/SequelizeIngredient';
 
 export default class RecipeModel implements IRecipeModel {
   private recipeModel = SequelizeRecipe;
@@ -15,14 +16,17 @@ export default class RecipeModel implements IRecipeModel {
   public async findAll(recipeType: string): Promise<IRecipeWithCategoryName[]> {
     const recipes = await this.recipeModel.findAll({
       where: { recipeType },
-      include: {
-        model: SequelizeCategory,
-        as: 'category',
-        attributes: ['categoryName'],
-      },
+      include: [
+        { model: SequelizeCategory, as: 'category', attributes: ['categoryName'] },
+        {
+          model: SequelizeIngredient,
+          as: 'ingredients',
+          attributes: ['ingredient', 'measure'],
+          order: [['strName', 'ASC']],
+        },
+      ],
       order: [['strName', 'ASC']],
     });
-
     const newRecipeList = recipes
       .map((recipe) => recipe.dataValues) as never as IRecipeWithCategoryFromModel[];
 
@@ -31,25 +35,22 @@ export default class RecipeModel implements IRecipeModel {
 
   public async findById(id: number): Promise<IRecipeWithCategoryName | null> {
     const recipeById = await this.recipeModel.findByPk(id, {
-      include: {
-        model: SequelizeCategory,
-        as: 'category',
-        attributes: ['categoryName'],
-      },
-    });
-
+      include: [
+        { model: SequelizeCategory, as: 'category', attributes: ['categoryName'] },
+        {
+          model: SequelizeIngredient,
+          as: 'ingredients',
+          attributes: ['ingredient', 'measure'],
+          order: [['strName', 'ASC']],
+        },
+      ] });
     if (recipeById?.dataValues) {
       const {
         categoryId,
         category,
         ...restRecipe } = recipeById.dataValues as never as IRecipeWithCategoryFromModel;
-
-      return {
-        ...restRecipe,
-        categoryName: category.categoryName,
-      };
+      return { ...restRecipe, categoryName: category.categoryName };
     }
-
     return null;
   }
 
