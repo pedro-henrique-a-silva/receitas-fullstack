@@ -11,7 +11,6 @@ export default class DoneModel implements IDonesModel {
 
   async getDones(id: number): Promise<AllUserDones> {
     const dones = await this.prisma.user.findUnique(getDonesQuerie(id));
-
     const { doneRecipes, ...restdones } = dones as never as DonesFromDB;
 
     const donesRecipesList = doneRecipes
@@ -23,7 +22,7 @@ export default class DoneModel implements IDonesModel {
     return { ...restdones, doneRecipes: donesRecipesList };
   }
 
-  async updateDones(recipeId: number, userId: number): Promise<void> {
+  async updateDones(recipeId: number, userId: number): Promise<boolean> {
     const dones = await this.prisma.doneRecipes.findFirst({
       where: { recipeId, userId },
     });
@@ -32,7 +31,7 @@ export default class DoneModel implements IDonesModel {
       await this.prisma.doneRecipes.deleteMany({
         where: { userId, recipeId },
       });
-      return;
+      return false;
     }
 
     await this.prisma.doneRecipes.create({
@@ -41,5 +40,7 @@ export default class DoneModel implements IDonesModel {
         recipeId,
       },
     });
+
+    return true;
   }
 }

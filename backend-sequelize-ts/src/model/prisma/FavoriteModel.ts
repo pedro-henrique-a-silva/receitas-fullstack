@@ -28,7 +28,7 @@ export default class FavoriteModel implements IFavoriteModel {
     return { ...restFavorites, favoriteRecipes: favoritesRecipesList };
   }
 
-  async updateFavorites(recipeId: number, userId: number): Promise<void> {
+  async updateFavorites(recipeId: number, userId: number): Promise<boolean> {
     const favorite = await this.prisma.favoriteRecipes.findFirst({
       where: { recipeId, userId },
     });
@@ -37,7 +37,7 @@ export default class FavoriteModel implements IFavoriteModel {
       await this.prisma.favoriteRecipes.deleteMany({
         where: { recipeId, userId },
       });
-      return;
+      return false;
     }
 
     await this.prisma.favoriteRecipes.create({
@@ -46,6 +46,8 @@ export default class FavoriteModel implements IFavoriteModel {
         recipeId,
       },
     });
+
+    return true;
   }
 
   async getOneFavorite(recipeId: number, userId: number): Promise<IFavorite | null> {
