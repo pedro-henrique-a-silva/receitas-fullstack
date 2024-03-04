@@ -1,25 +1,31 @@
 import { PrismaClient } from '@prisma/client';
 import IFavoriteModel from '../../interfaces/favorite/IFavoriteModel';
-import { AllUserFavorites, IFavorite } from '../../interfaces/favorite/IFavorite';
+import {
+  AllUserFavorites,
+  FavoritesFromDB,
+  IFavorite,
+  RecipeList,
+} from '../../interfaces/favorite/IFavorite';
+import getFavoritesQuerie from './queries/getFavoritesQuerie';
 
 export default class FavoriteModel implements IFavoriteModel {
   constructor(
     private prisma = new PrismaClient(),
   ) {}
 
-  async getFavorites(id: number): Promise<any> {
-    const favorites = await this.prisma.user.findUnique({
-      select: {
-        name: true,
-        username: true,
-        favoriteRecipes: {
-          select: { recipe: true },
-        },
-      },
-      where: { id },
-    });
+  async getFavorites(id: number): Promise<AllUserFavorites> {
+    const favorites = await this.prisma.user.findUnique(getFavoritesQuerie(id));
 
-    return favorites;
+    const { favoriteRecipes, ...restFavorites } = favorites as never as FavoritesFromDB;
+
+    const favoritesRecipesList = favoriteRecipes
+      .map((recipe: RecipeList) => {
+        const { categoryId, category, ...restRecipe } = recipe.recipe;
+
+        return { ...restRecipe, categoryName: category.categoryName };
+      });
+
+    return { ...restFavorites, favoriteRecipes: favoritesRecipesList };
   }
 
   async updateFavorites(recipeId: number, userId: number): Promise<void> {
