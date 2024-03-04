@@ -8,6 +8,7 @@
     "start": "npx ts-node src/server.ts",
     "db:reset": "npx -y tsc && npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate",
     "db:seed": "npx sequelize db:seed:all",
+    "predev":"npx prisma migrate dev",
     "dev": "ts-node-dev src/server.ts",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json .",
     "test": "mocha tests/**/*.test.ts --exit"
