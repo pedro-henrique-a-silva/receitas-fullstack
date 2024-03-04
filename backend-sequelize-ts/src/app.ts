@@ -11,7 +11,7 @@ class App {
 
     this.config();
 
-    this.app.get('/', (req: Request, res: Response) => res.send('to vivo.'));
+    this.app.get('/healthy', (req: Request, res: Response) => res.send('to vivo.'));
 
     this.routes();
   }
