@@ -1,10 +1,11 @@
 import { CreateUser, IUser } from '../interfaces/user/IUser';
 import IUserModel from '../interfaces/user/IUserModel';
-import UserModel from '../model/sequelize/UserModel';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
 import HashService from '../interfaces/IHash';
 import BCryptHashService from '../utils/Hash';
+// import UserModel from '../model/sequelize/UserModel';
+import UserModel from '../model/prisma/UserModel';
 
 export default class UserService {
   private msgInvalidData = 'Dados incorretos';
