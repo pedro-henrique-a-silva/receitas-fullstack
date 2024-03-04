@@ -8,6 +8,6 @@ export interface IIngredient extends Identifiable {
 }
 
 export type Ingredients = {
-  ingredient: string;
-  measure: string;
+  ingredient: string | null;
+  measure: string | null;
 };
