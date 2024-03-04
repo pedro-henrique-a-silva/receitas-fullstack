@@ -47,7 +47,7 @@ SequelizeUser.belongsToMany(SequelizeRecipe, {
   through: SequelizeDone,
   foreignKey: 'userId',
   otherKey: 'recipeId',
-  as: 'recipesDone',
+  as: 'doneRecipes',
 });
 
 SequelizeRecipe.belongsToMany(SequelizeUser, {
