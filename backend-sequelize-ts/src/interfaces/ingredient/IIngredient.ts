@@ -1,4 +1,4 @@
-import { Identifiable } from "..";
+import { Identifiable } from '..';
 
 export interface IIngredient extends Identifiable {
   recipeId: number;
@@ -6,3 +6,8 @@ export interface IIngredient extends Identifiable {
   order: number;
   measure: string;
 }
+
+export type Ingredients = {
+  ingredient: string;
+  measure: string;
+};
