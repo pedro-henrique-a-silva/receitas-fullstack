@@ -54,7 +54,7 @@ SequelizeRecipe.belongsToMany(SequelizeUser, {
   through: SequelizeFavorite,
   foreignKey: 'recipeId',
   otherKey: 'userId',
-  as: 'users',
+  as: 'usersFavorites',
 });
 
 export default SequelizeFavorite;
