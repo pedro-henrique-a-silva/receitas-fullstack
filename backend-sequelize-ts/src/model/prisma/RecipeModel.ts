@@ -15,8 +15,10 @@ export default class RecipeModel implements IRecipeModel {
     const recipes = await this.prisma.recipe.findMany({
       include: {
         category: { select: { categoryName: true } },
+        ingredients: { select: { ingredient: true, measure: true }, orderBy: [{ order: 'asc' }] },
       },
       where: { recipeType: type },
+      orderBy: [{ strName: 'asc' }],
     });
 
     return recipes.map(RecipeModel.responseRecipeList);
@@ -26,6 +28,7 @@ export default class RecipeModel implements IRecipeModel {
     const recipe = await this.prisma.recipe.findUnique({
       include: {
         category: { select: { categoryName: true } },
+        ingredients: { select: { ingredient: true, measure: true }, orderBy: [{ order: 'asc' }] },
       },
       where: { id },
     });
