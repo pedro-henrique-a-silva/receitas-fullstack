@@ -68,7 +68,7 @@ model FavoriteRecipes {
   recipeId Int    @map("recipe_id")
 
   @@id([userId, recipeId])
-  @@map("favorite")
+  @@map("favorites")
 }
 
 model DoneRecipes {
