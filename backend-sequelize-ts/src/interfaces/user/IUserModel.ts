@@ -1,4 +1,4 @@
-import { CreateUser, IUser } from "./IUser";
+import { CreateUser, IUser } from './IUser';
 
 export default interface IUserModel {
   findByUsername(username: string): Promise<IUser | null>;
