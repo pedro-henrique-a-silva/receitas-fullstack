@@ -1,4 +1,5 @@
 import { Identifiable } from '..';
+import { Ingredients } from '../ingredient/IIngredient';
 
 export type IRecipe = Identifiable & {
   strName: string;
@@ -11,10 +12,10 @@ export type IRecipe = Identifiable & {
   strThumb: string;
   strTags: string | null;
   strYoutube: string | null;
+  ingredients?: Ingredients[]
 };
 
 export type IRecipeWithCategoryFromModel = IRecipe & {
-  categoryId: number;
   category: { categoryName: string };
 };
 
