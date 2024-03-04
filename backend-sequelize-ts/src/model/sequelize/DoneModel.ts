@@ -1,32 +1,27 @@
+import { IRecipeWithCategoryFromModel } from '../../interfaces/recipe/IRecipe';
 import SequelizeDone from '../../database/models/SequelizeDone';
-import SequelizeCategory from '../../database/models/SequelizeCategory';
-import SequelizeRecipe from '../../database/models/SequelizeRecipe';
 import SequelizeUser from '../../database/models/SequelizeUser';
-import { AllUserDones, IDones } from '../../interfaces/dones/IDones';
+import {
+  AllUserDones,
+  DonesFromDBSequelize,
+} from '../../interfaces/dones/IDones';
 import IDonesModel from '../../interfaces/dones/IDonesModel';
+import getDonesQuerie from './queries/getDonesQuerie';
 
 export default class DoneModel implements IDonesModel {
   private userModel = SequelizeUser;
   private doneModel = SequelizeDone;
 
-  async getDones(id: number): Promise<AllUserDones | null> {
-    const dones = await this.userModel.findOne({
-      attributes: ['id', 'name', 'username'],
-      include: [
-        {
-          model: SequelizeRecipe,
-          through: { attributes: [] },
-          as: 'recipesDone',
-          include: [
-            { model: SequelizeCategory, as: 'category', attributes: ['categoryName'] },
-          ],
-        },
+  async getDones(id: number): Promise<AllUserDones> {
+    const dones = await this.userModel.findOne(getDonesQuerie(id));
 
-      ],
-      where: { id },
-    });
+    const { doneRecipes, ...restDones } = dones?.dataValues as never as DonesFromDBSequelize;
 
-    return dones as never as AllUserDones;
+    const recipeList = doneRecipes
+      .map((recipe) => recipe.dataValues) as never as IRecipeWithCategoryFromModel[];
+    const newRecipeList = recipeList.map(DoneModel.responseRecipeList);
+
+    return { ...restDones, doneRecipes: newRecipeList };
   }
 
   async updateDones(recipeId: number, userId: number): Promise<void> {
@@ -43,5 +38,14 @@ export default class DoneModel implements IDonesModel {
     }
 
     await this.doneModel.create({ userId, recipeId });
+  }
+
+  static responseRecipeList(recipe: IRecipeWithCategoryFromModel) {
+    const { categoryId, category, ...restRecipe } = recipe;
+
+    return {
+      ...restRecipe,
+      categoryName: category.categoryName,
+    };
   }
 }

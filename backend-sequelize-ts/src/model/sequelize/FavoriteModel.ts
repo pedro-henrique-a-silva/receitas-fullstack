@@ -1,23 +1,31 @@
-import { AllUserFavorites, IFavorite } from '../../interfaces/favorite/IFavorite';
+import { IRecipeWithCategoryFromModel } from '../../interfaces/recipe/IRecipe';
+import {
+  AllUserFavorites,
+  IFavorite,
+  favoritesFromDBSequelize,
+} from '../../interfaces/favorite/IFavorite';
 import IFavoriteModel from '../../interfaces/favorite/IFavoriteModel';
 import SequelizeFavorite from '../../database/models/SequelizeFavorite';
 import SequelizeUser from '../../database/models/SequelizeUser';
-import SequelizeRecipe from '../../database/models/SequelizeRecipe';
+import getFavoritesQuerie from './queries/getFavoritesQuerie';
 
 export default class FavoriteModel implements IFavoriteModel {
   private favoriteModel = SequelizeFavorite;
   private userModel = SequelizeUser;
 
   async getFavorites(id: number): Promise<AllUserFavorites | null> {
-    const favorites = await this.userModel.findOne({
-      attributes: ['id', 'name', 'username'],
-      include: [
-        { model: SequelizeRecipe, through: { attributes: [] }, as: 'favoriteRecipes' },
-      ],
-      where: { id },
-    });
+    const favorites = await this.userModel.findOne(getFavoritesQuerie(id));
 
-    return favorites?.dataValues as never as AllUserFavorites;
+    const {
+      favoriteRecipes,
+      ...restDones
+    } = favorites?.dataValues as never as favoritesFromDBSequelize;
+
+    const recipeList = favoriteRecipes
+      .map((recipe) => recipe.dataValues) as never as IRecipeWithCategoryFromModel[];
+    const newRecipeList = recipeList.map(FavoriteModel.responseRecipeList);
+
+    return { ...restDones, favoriteRecipes: newRecipeList };
   }
 
   async updateFavorites(recipeId: number, userId: number): Promise<void> {
@@ -45,5 +53,14 @@ export default class FavoriteModel implements IFavoriteModel {
     });
 
     return favorite;
+  }
+
+  static responseRecipeList(recipe: IRecipeWithCategoryFromModel) {
+    const { categoryId, category, ...restRecipe } = recipe;
+
+    return {
+      ...restRecipe,
+      categoryName: category.categoryName,
+    };
   }
 }
