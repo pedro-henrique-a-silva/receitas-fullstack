@@ -17,7 +17,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 type CarouselProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function Carousel(props: CarouselProps) {
@@ -28,7 +28,7 @@ function Carousel(props: CarouselProps) {
 
   useEffect(() => {
     const getData = async () => {
-      const mealOrDrinkRecomend = mealOrDrink === 'meals' ? 'drinks' : 'meals';
+      const mealOrDrinkRecomend = mealOrDrink;
       const recomendData = await fetchAllRecipes(mealOrDrinkRecomend);
       setRecomendations(recomendData.slice(0, 6));
     };
