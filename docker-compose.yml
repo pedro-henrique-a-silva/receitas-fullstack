@@ -12,11 +12,9 @@ services:
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/tests:/app/tests
-    depends_on:
-      - backend
     ports:
       - 3000:3000
-  backend-sequelize:
+  backend-express:
     build: ./backend-sequelize-ts
     container_name: api-receita-sequelize
     tty: true
