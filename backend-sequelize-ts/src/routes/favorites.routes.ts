@@ -7,7 +7,7 @@ const favoriteController = new FavoriteController();
 const favoriteRouter = Router();
 
 favoriteRouter.get(
-  '/:id',
+  '/',
   Auth.auth,
   (req: RequestWithUser, res: Response) => favoriteController.getFavorites(req, res),
 );

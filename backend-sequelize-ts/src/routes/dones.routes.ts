@@ -8,7 +8,7 @@ const donesController = new DoneController();
 const donesRouter = Router();
 
 donesRouter.get(
-  '/:id',
+  '/',
   Auth.auth,
   (req: RequestWithUser, res: Response) => donesController.getDones(req, res),
 );
