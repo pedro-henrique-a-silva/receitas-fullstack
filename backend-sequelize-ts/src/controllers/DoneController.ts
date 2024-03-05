@@ -10,7 +10,7 @@ export default class DoneController {
   ) {}
 
   async getDones(req: RequestWithUser, res: Response) {
-    const { id } = req.params;
+    const id = req.user?.id;
     const { status, data } = await this.donesService.getDones(Number(id));
 
     const statusCode = mapStatusHTTP(status);

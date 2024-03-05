@@ -9,9 +9,8 @@ export default class FavoriteController {
   ) {}
 
   async getFavorites(req: RequestWithUser, res: Response) {
-    // const id = req.user?.id;
-    const { id } = req.params;
-
+    const id = req.user?.id;
+    console.log(id);
     const { status, data } = await this.favoriteService.getFavorites(Number(id));
 
     const statusCode = mapStatusHTTP(status);
