@@ -24,7 +24,6 @@ export const CardRecipeStyle = styled(Card)`
   display: flex;
   flex-direction: column;
   padding: 1rem 0.5rem;
-  width: 300px;
 
   & img {
     position: relative;
@@ -36,5 +35,13 @@ export const CardRecipeStyle = styled(Card)`
     width: 100%;
     height: 100%;
     background: black;
+  }
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+
+  @media (min-width: 768px) {
+    width: 200px;
   }
 `;
