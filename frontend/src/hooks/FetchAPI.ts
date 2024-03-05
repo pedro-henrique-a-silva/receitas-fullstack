@@ -27,7 +27,7 @@ function FetchAPI() {
 
   const fetchAllRecipes = async (mealOrDrink: string) => {
     const requestOptions = RequestHeader();
-    const recipes = await fetch(`http://localhost:3001/${mealOrDrink}/all`, requestOptions);
+    const recipes = await fetch(`http://localhost:3001/${mealOrDrink}`, requestOptions);
     const recipesJson = await recipes.json();
   
     if (recipes.status === 401) {
@@ -57,7 +57,7 @@ function FetchAPI() {
 
   const fetchCategoriesList = async (mealOrDrink: string) => {
     const requestOptions = RequestHeader();
-    const categories = await fetch(`http://localhost:3001/${mealOrDrink}/all/categories`, requestOptions)
+    const categories = await fetch(`http://localhost:3001/${mealOrDrink}/category`, requestOptions)
     const categoriesJson = await categories.json()
 
     if (categories.status === 401) {
@@ -109,7 +109,7 @@ function FetchAPI() {
 
   const fetchDones = async () => {
     const requestOptions = RequestHeader();
-    const dones = await fetch(`http://localhost:3001/done/`, requestOptions);
+    const dones = await fetch(`http://localhost:3001/dones/`, requestOptions);
     const donesJson = await dones.json();
     
     if (dones.status === 401) {
@@ -122,7 +122,7 @@ function FetchAPI() {
 
   const fetchUpdateDones = async (recipeID: number) => {
     const requestOptions = RequestHeaderUpdateFavorite(recipeID);
-    const dones = await fetch(`http://localhost:3001/done`, requestOptions);
+    const dones = await fetch(`http://localhost:3001/dones`, requestOptions);
     const donesJson = await dones.json();
     
     if (dones.status === 401) {
