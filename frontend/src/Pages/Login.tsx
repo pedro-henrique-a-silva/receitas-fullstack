@@ -42,7 +42,7 @@ function Login() {
     const passwordLength = loginUser.password.length;
     const regexEmail = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
 
-    if (passwordLength < 7) {
+    if (passwordLength < 6) {
       return false;
     }
     return regexEmail.test(loginUser.email);
@@ -93,7 +93,7 @@ function Login() {
   }
 
   const navigate = useNavigate();
-  const toMealsAfterClick = () => navigate('/meals');
+  const toMealsAfterClick = () => navigate('/meal');
 
   const setUserLocalStorage = () => localStorage
     .setItem('user', JSON.stringify({ email: loginUser.email }));

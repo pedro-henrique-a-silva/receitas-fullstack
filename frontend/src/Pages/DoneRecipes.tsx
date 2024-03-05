@@ -11,6 +11,7 @@ import { ShareNetwork } from '@phosphor-icons/react';
 import Avatar from '@mui/material/Avatar';
 import {ListItemStyled, ButtonStyled, CardWrapper, ListTextContent} from './DoneRecipesStyle';
 import FetchAPI from '../hooks/FetchAPI';
+import { Container } from '@mui/material';
 
 function DoneRecipes() {
   const [recipesDone, setRecipesDone] = useState<DoneRecipeType[]>([]);
@@ -25,9 +26,8 @@ function DoneRecipes() {
 
   useEffect(() => {
     const dones = async () => {
-      const donesRecipes = await fetchDones() || [];
-
-      setRecipesDone(donesRecipes.recipesDone);
+      const recipes = await fetchDones() || [];
+      setRecipesDone(recipes.doneRecipes);
     }
     
     dones()
@@ -48,10 +48,12 @@ function DoneRecipes() {
     console.log(recipe);
     
     if (recipe.recipeType === 'meal') {
-      return `${recipe.strArea} - ${recipe.category.categoryName}`;
+      return `${recipe.strArea} - ${recipe.categoryName}`;
     }
-    return recipe.alcoholicOrNot;
+    return recipe.strAlcoholic;
   };
+
+  if (recipesDone.length === 0) return <div>Loading...</div>
 
   return (
     <>
@@ -70,10 +72,12 @@ function DoneRecipes() {
             </ButtonStyled>
           ))}
         </CardWrapper>
+        
+        <Container maxWidth="sm">
         <List>
           {recipesDone
-            .filter((recipe) => filter === 'all' || recipe.recipeType === filter)
-            .map((recipe, index) => (
+            .filter((recipe: DoneRecipeType) => filter === 'all' || recipe.recipeType === filter)
+            .map((recipe: DoneRecipeType, index: number) => (
               <ListItemStyled
                 disablePadding
                 key={ index }
@@ -117,6 +121,7 @@ function DoneRecipes() {
               
             ))}
         </List>
+        </Container>
       </div>
     </>
   );

@@ -5,8 +5,8 @@ import { FooterWrapper } from './FooterStyled';
 
 function Footer() {
   const navigate = useNavigate();
-  const toDrinks = () => navigate('/drinks');
-  const toMeals = () => navigate('/meals');
+  const toDrinks = () => navigate('/drink');
+  const toMeals = () => navigate('/meal');
   return (
     <FooterWrapper data-testid="footer">
       <Fab color="secondary" aria-label="add">

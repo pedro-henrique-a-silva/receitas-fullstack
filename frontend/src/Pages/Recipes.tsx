@@ -10,7 +10,7 @@ import { ContainerStyle, CardRecipeStyle } from './RecipesStyle';
 import FetchAPI from '../hooks/FetchAPI';
 
 type RecipesProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function Recipes({ mealOrDrink }: RecipesProps) {
@@ -32,9 +32,9 @@ function Recipes({ mealOrDrink }: RecipesProps) {
   };
 
   const handleRecipeClick = (recipe: Recipe) => {
-    const route = mealOrDrink === 'meals'
-      ? `/meals/${recipe.id}`
-      : `/drinks/${recipe.id}`;
+    const route = mealOrDrink === 'meal'
+      ? `/meal/${recipe.id}`
+      : `/drink/${recipe.id}`;
     navigate(route);
   };
 
@@ -69,7 +69,7 @@ function Recipes({ mealOrDrink }: RecipesProps) {
     getCategorys();
   }, [mealOrDrink]);
 
-  const isMealOrDrink = (mealOrDrink === 'meals') || (mealOrDrink === 'drinks');
+  const isMealOrDrink = (mealOrDrink === 'meal') || (mealOrDrink === 'drink');
   const hasRecipeID = (!recipeID || recipeInProgress);
 
   if (recipes.length === 0 || categorys.length === 0) return <p>Loading...</p>;

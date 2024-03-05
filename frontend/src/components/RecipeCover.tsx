@@ -2,7 +2,7 @@ import { ShareNetwork, HeartStraight } from '@phosphor-icons/react';
 import { RecipeCoverWrapper, SocialButtons } from './RecipeCoverStyled';
 
 type RecipeCoverProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
   recipeDetails: any;
   favorite: boolean;
   handleShareClick: () => void;
@@ -33,7 +33,7 @@ function RecipeCover(props: RecipeCoverProps) {
         data-testid="recipe-category"
       >
         {
-         recipeDetails?.category.categoryName
+         recipeDetails?.categoryName
         }
 
       </h3>

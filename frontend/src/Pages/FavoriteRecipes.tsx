@@ -13,6 +13,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { ShareNetwork, HeartStraight } from '@phosphor-icons/react';
 import Avatar from '@mui/material/Avatar';
 import {ListItemStyled, ButtonStyled, CardWrapper} from './FavoriteRecipesStyle';
+import { Container } from '@mui/material';
 
 function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState<any[]>([]);
@@ -42,8 +43,8 @@ function FavoriteRecipes() {
 
   useEffect(() => {
     const getFavorites = async () => {
-      const favoriteRecipesFromLocalStorage = await fetchFavorites() || [];
-      setFavoriteRecipes(favoriteRecipesFromLocalStorage.recipes);
+      const recipes = await fetchFavorites() || [];
+      setFavoriteRecipes(recipes.favoriteRecipes);
     }
     
     getFavorites()
@@ -84,6 +85,7 @@ function FavoriteRecipes() {
 
         </ButtonStyled>
       </CardWrapper>
+      <Container maxWidth="sm">
       <List>
         {favoriteRecipesToRender.map((recipe, index) => (
           <ListItemStyled
@@ -131,6 +133,7 @@ function FavoriteRecipes() {
 
         ))}
       </List>
+      </Container>
       <Footer />
     </>
   );

@@ -12,9 +12,11 @@ import { getFromLocalStorage,
 import FetchAPI from '../hooks/FetchAPI';
 import Message from '../components/Message';
 import RecipeCover from '../components/RecipeCover';
+import { Ingredients, RecipeDetailsType } from '../types';
+import { Container } from '@mui/material';
 
 type RecipeInProgressProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function RecipeInProgress(props: RecipeInProgressProps) {
@@ -22,7 +24,7 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   const { recipeID } = useParams();
   const navigate = useNavigate();
 
-  const [recipeDetails, setRecipeDetails] = useState<any>({});
+  const [recipeDetails, setRecipeDetails] = useState<RecipeDetailsType>();
 
   const [recipeInProgress, setRecipeInProgress] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -30,30 +32,27 @@ function RecipeInProgress(props: RecipeInProgressProps) {
 
   const { fetchUpdateFavorites, fetchDetails, fetchUpdateDones } = FetchAPI();
 
-  const getIngredients = () => Object
-    .entries(recipeDetails)
-    .filter(([key, value]) => key.includes('strIngredient') && value)
-    .map((values, index) => (`${values[1]} ${recipeDetails[`strMeasure${index + 1}`]
-    || ''}`));
-
   const toggleIsVisible = () => {
     setIsVisible(!isVisible);
   };
 
   const handleFavoriteClick = async () => {
-    const { favorite } = await fetchUpdateFavorites(recipeDetails.id)
-    setFavorite(favorite)
+    if (recipeDetails) {
+      const { favorite } = await fetchUpdateFavorites(recipeDetails?.id)
+      setFavorite(favorite)
+    } else {
+      setFavorite(false)
+    }
   };
 
   const handleShareClick = () => {
     const { location: { origin, pathname } } = window;
     const url = `${origin}${pathname}`;
-    navigator.clipboard.writeText(url.replace('/in-progress', ''));
+    navigator.clipboard.writeText(url.replace('/progress', ''));
     toggleIsVisible();
   };
 
   const handleIngredientChange = (
-    ingredientID: number,
     ingredientName: string,
   ) => {
 
@@ -71,9 +70,10 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   };
 
   const handleFinishRecipe = async () => {
-    await fetchUpdateDones(recipeDetails.id)
-
-    navigate('/done-recipes');
+    if (recipeDetails) {
+      await fetchUpdateDones(recipeDetails.id)
+      navigate('/done');
+    }
   };
 
   useEffect(() => {
@@ -86,11 +86,11 @@ function RecipeInProgress(props: RecipeInProgressProps) {
     };
 
     const recipeInProgressLocalStore = getFromLocalStorage('inProgressRecipes')
-    || { meals: {}, drinks: {} };
+    || { meal: {}, drink: {} };
     let ingredientsProgress = [];
 
     const recipesData = recipeInProgressLocalStore[mealOrDrink];
-    if (Object.keys(recipesData).includes(recipeID as string)) {
+    if (recipesData && Object.keys(recipesData).includes(recipeID as string)) {
       ingredientsProgress = recipesData[recipeID as string];
     }
     getDetails();
@@ -98,57 +98,66 @@ function RecipeInProgress(props: RecipeInProgressProps) {
   }, [recipeID, mealOrDrink]);
 
   
-  if (Object.entries(recipeDetails).length === 0) return (<div>Loading...</div>);
+  if (!recipeDetails) return (<div>Loading...</div>);
 
   return (
     <>
       {(isVisible) && <Message toggleIsVisible={ toggleIsVisible } />}
-      <RecipeCover
-        mealOrDrink={ mealOrDrink }
-        favorite={ favorite }
-        handleShareClick={ handleShareClick }
-        handleFavoriteClick={ handleFavoriteClick }
-        recipeDetails={ recipeDetails }
-      />
-      <h3>Ingredients</h3>
-      <List >
-        {getIngredients().map((ingredient, index) => (
-            <ListItem
-              disablePadding
-              key={ index }
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              <ListItemButton
-                role={undefined}
-                onClick={ () => handleIngredientChange(index, ingredient.trim())}
+      <Container maxWidth="sm">
+        <RecipeCover
+          mealOrDrink={ mealOrDrink }
+          favorite={ favorite }
+          handleShareClick={ handleShareClick }
+          handleFavoriteClick={ handleFavoriteClick }
+          recipeDetails={ recipeDetails }
+        />
+      </Container>
+
+      <Container maxWidth="sm">
+        <h3>Ingredients</h3>
+        <List >
+          {recipeDetails.ingredients.map((item: Ingredients, index: number) => (
+              <ListItem
+                disablePadding
+                key={ index }
+                data-testid={ `${index}-ingredient-name-and-measure` }
               >
-                <ListItemIcon>
-                  {/* <Dot size={32} color="#3c3939" weight="fill" /> */}
-                  <Checkbox
-                    checked={recipeInProgress.indexOf(ingredient.trim()) !== -1}
-                    name={ ingredient.trim() }
-                    id={ ingredient.trim() }
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': `checkbox - ${index}` }}
+                <ListItemButton
+                  role={undefined}
+                  onClick={ () => handleIngredientChange(`${item.ingredient} ${item.measure}`)}
+                >
+                  <ListItemIcon>
+                    {/* <Dot size={32} color="#3c3939" weight="fill" /> */}
+                    <Checkbox
+                      checked={recipeInProgress.indexOf(`${item.ingredient} ${item.measure}`) !== -1}
+                      name={ `${item.ingredient} ${item.measure}` }
+                      id={ `${item.ingredient} ${item.measure}` }
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': `checkbox - ${index}` }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    id={`checkbox - ${index}`}
+                    primary={`${item.ingredient} ${item.measure}`}
                   />
-                </ListItemIcon>
-                <ListItemText
-                  id={`checkbox - ${index}`}
-                  primary={ingredient as string}
-                />
-              </ListItemButton>
-            </ListItem>
-          
-          ))}
-      </List>
-      <h3>Instructions</h3>
-      <DescriptionContainer maxWidth="sm">
-        <p data-testid="instructions">{recipeDetails?.strInstructions}</p>
-      </DescriptionContainer>
+                </ListItemButton>
+              </ListItem>
+            
+            ))}
+        </List>
+      </Container>
+
+      <Container maxWidth="sm">
+        <h3>Instructions</h3>
+        <DescriptionContainer maxWidth="sm">
+          <p data-testid="instructions">{recipeDetails?.strInstructions}</p>
+        </DescriptionContainer>
+      </Container>
+
       <ButtonFixed
         type="button"
         onClick={ handleFinishRecipe }
-        disabled={ recipeInProgress.length !== getIngredients().length }
+        disabled={ recipeInProgress.length !== recipeDetails.ingredients.length }
         data-testid="finish-recipe-btn"
         variant="contained"
         color="secondary"

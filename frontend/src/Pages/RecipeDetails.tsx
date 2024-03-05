@@ -15,9 +15,10 @@ import {
 } from '../utils/utilsLocalStorage';
 import RecipeCover from '../components/RecipeCover';
 import FetchAPI from '../hooks/FetchAPI';
+import { Ingredients } from '../types';
 
 type RecipeDetailsProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function RecipeDetails(props: RecipeDetailsProps) {
@@ -31,23 +32,17 @@ function RecipeDetails(props: RecipeDetailsProps) {
   const [favorite, setFavorite] = useState(false);
   const { fetchDetails, fetchUpdateFavorites } = FetchAPI();
 
-  const getIngredients = () => Object
-    .entries(recipeDetails)
-    .filter(([key, value]) => key.includes('strIngredient') && value)
-    .map((values, index) => (`${values[1]} ${recipeDetails[`strMeasure${index + 1}`]
-    || ''}`));
-
   const toggleIsVisible = () => {
     setIsVisible(!isVisible);
   };
 
   const handleClickStartRecipe = () => {
-    navigate(`/${mealOrDrink}/${recipeID}/in-progress`);
+    navigate(`/${mealOrDrink}/${recipeID}/progress`);
   };
 
   const handleFavoriteClick = async () => {
-    const { favorite } = await fetchUpdateFavorites(recipeDetails.id)
-    setFavorite(favorite)
+    const { message } = await fetchUpdateFavorites(recipeDetails.id)
+    setFavorite(message)
   };
 
   const handleShareClick = () => {
@@ -75,6 +70,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
   return (
     <>
       {(isVisible) && <Message toggleIsVisible={ toggleIsVisible } />}
+      <Container maxWidth="sm">
       <RecipeCover
         mealOrDrink={ mealOrDrink }
         favorite={ favorite }
@@ -82,10 +78,11 @@ function RecipeDetails(props: RecipeDetailsProps) {
         handleFavoriteClick={ handleFavoriteClick }
         recipeDetails={ recipeDetails }
       />
-
-    "<h3>Ingredients</h3>
+      </Container>
+    <Container maxWidth="sm">
+    <h3>Ingredients</h3>
     <List >
-      {getIngredients().map((ingredient, index) => (
+      {recipeDetails.ingredients.map((item: Ingredients, index: number) => (
           <ListItem
             disablePadding
             key={ index }
@@ -96,19 +93,22 @@ function RecipeDetails(props: RecipeDetailsProps) {
                 <Dot size={32} color="#3c3939" weight="fill" />
               </ListItemIcon>
               <ListItemText
-                primary={ingredient as string}
+                primary={`${item.ingredient} ${item.measure}`}
               />
             </ListItemButton>
           </ListItem>
         
         ))}
       </List>
+      </Container>
       
-      <h3>Instructions</h3>
       <Container maxWidth="sm">
+      <h3>Instructions</h3>
         <p data-testid="instructions">{recipeDetails?.strInstructions}</p>
       </Container>
-      {mealOrDrink === 'meals' && (
+      <Container maxWidth="sm">
+      
+      {mealOrDrink === 'meal' && (
         <RecipeVideo>
           <iframe
             title={ recipeDetails?.strName }
@@ -120,6 +120,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
 
       )}
       <Carousel mealOrDrink={ mealOrDrink } />
+      </Container>
       <ButtonFixed
         type="button"
         onClick={ () => handleClickStartRecipe() }
