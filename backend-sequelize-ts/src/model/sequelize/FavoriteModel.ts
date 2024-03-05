@@ -13,7 +13,7 @@ export default class FavoriteModel implements IFavoriteModel {
   private favoriteModel = SequelizeFavorite;
   private userModel = SequelizeUser;
 
-  async getFavorites(id: number): Promise<AllUserFavorites | null> {
+  async getFavorites(id: number): Promise<AllUserFavorites> {
     const favorites = await this.userModel.findOne(getFavoritesQuerie(id));
 
     const {
