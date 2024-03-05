@@ -9,6 +9,11 @@ export type RegisterType = {
   password: string;
 };
 
+export type Ingredients = {
+  ingredient: string;
+  measure: string;
+}
+
 export type Recipe = {
   strThumb: string;
   strName: string;
@@ -21,19 +26,31 @@ export type ContextType = {
   updateRecipes: (recipesData: any[]) => void,
 };
 
-type CategoryName = {
-  categoryName: string
-}
-
 export type DoneRecipeType = {
-  id: string,
-  recipeType: string,
-  strArea: string,
-  category: CategoryName,
-  alcoholicOrNot: string,
-  strName: string,
-  strThumb: string,
-  doneDate: string,
-  strTags: string[],
-  tags: string[]
+  id: number,
+  strName: string;
+  categoryName: string;
+  recipeType: string;
+  strAlcoholic?: string | null,
+  strGlass: string | null;
+  strArea: string | null;
+  strInstructions: string;
+  strThumb: string;
+  strTags: string | null;
+  strYoutube: string | null;
+};
+
+export type RecipeDetailsType = {
+  id: number,
+  strName: string;
+  categoryName: string;
+  recipeType: string;
+  strAlcoholic?: string | null,
+  strGlass: string | null;
+  strArea: string | null;
+  strInstructions: string;
+  strThumb: string;
+  strTags: string | null;
+  strYoutube: string | null;
+  ingredients: Ingredients[]
 };
