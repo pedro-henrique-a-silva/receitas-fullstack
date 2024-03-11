@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import {Container} from './CarouselStyle';
-import { fetchApi } from '../utils/fetchAPi';
-
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
+import FetchAPI from '../hooks/FetchAPI';
+
+import { 
+  EffectCoverflow,
+  Navigation, 
+  Pagination, 
+  } from 'swiper/modules';
+
 
 // Import Swiper styles
 import 'swiper/css';
@@ -13,17 +17,19 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 type CarouselProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function Carousel(props: CarouselProps) {
   const { mealOrDrink } = props;
   const [recomendations, setRecomendations] = useState<any[]>([]);
 
+  const { fetchAllRecipes } = FetchAPI();
+
   useEffect(() => {
     const getData = async () => {
-      const mealOrDrinkRecomend = mealOrDrink === 'meals' ? 'drinks' : 'meals';
-      const recomendData = await fetchApi(`http://localhost:3001/${mealOrDrinkRecomend}/all`);
+      const mealOrDrinkRecomend = mealOrDrink;
+      const recomendData = await fetchAllRecipes(mealOrDrinkRecomend);
       setRecomendations(recomendData.slice(0, 6));
     };
     getData();
@@ -32,14 +38,22 @@ function Carousel(props: CarouselProps) {
   return (
     <Container>
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={1}
+        modules={[EffectCoverflow, Navigation, Pagination]}
+        speed={1000}
+        slidesPerView={"auto"}
+        centeredSlides
         tag="section" 
+        effect='coverflow'
+        coverflowEffect={{
+          rotate: 50, 
+          stretch: 0, 
+          depth: 160, 
+          modifier: 1, 
+          slideShadows: false,
+          scale: 0.7
+        }}
         navigation
         pagination={{ clickable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
       >
         {recomendations.map((recomendation, index) => (
       

@@ -9,11 +9,11 @@ function Profile() {
   const emailUser = (rawEmaildata) ? JSON.parse(rawEmaildata).email : '';
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/done-recipes');
+    navigate('/done');
   };
 
   const handleClickFavorite = () => {
-    navigate('/favorite-recipes');
+    navigate('/favorite');
   };
 
   const handleClickLogout = () => {

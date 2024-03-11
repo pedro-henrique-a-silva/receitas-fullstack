@@ -3,14 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import ButtonCard from '../components/ButtonCard';
 import Header from '../components/Header';
-import { fetchApi } from '../utils/fetchAPi';
 import Footer from './Footer';
 import RecipesContext from '../context/contextRecipes';
 import { Recipe } from '../types';
 import { ContainerStyle, CardRecipeStyle } from './RecipesStyle';
+import FetchAPI from '../hooks/FetchAPI';
 
 type RecipesProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function Recipes({ mealOrDrink }: RecipesProps) {
@@ -18,6 +18,8 @@ function Recipes({ mealOrDrink }: RecipesProps) {
   const [categorys, setCategorys] = useState<any[]>([]);
   const { recipeID, recipeInProgress } = useParams();
   const navigate = useNavigate();
+
+  const { fetchAllRecipes, fetchRecipesByCategory, fetchCategoriesList} = FetchAPI();
 
   const { recipes, updateRecipes } = useContext(RecipesContext);
 
@@ -30,21 +32,19 @@ function Recipes({ mealOrDrink }: RecipesProps) {
   };
 
   const handleRecipeClick = (recipe: Recipe) => {
-    const route = mealOrDrink === 'meals'
-      ? `/meals/${recipe.id}`
-      : `/drinks/${recipe.id}`;
+    const route = mealOrDrink === 'meal'
+      ? `/meal/${recipe.id}`
+      : `/drink/${recipe.id}`;
     navigate(route);
   };
 
   useEffect(() => {
     const getRecipes = async () => {
       if (selectedCategory) {
-        const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/category/${selectedCategory}`);
-        if (recipesData.length !== 0) {
-          updateRecipes(recipesData.slice(0, 12));
-        }
+        const recipesData = await fetchRecipesByCategory(mealOrDrink, selectedCategory)
+        updateRecipes(recipesData.slice(0, 12));
       } else {
-        const recipesData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all`);
+        const recipesData = await fetchAllRecipes(mealOrDrink);
         if (recipesData) {
           updateRecipes(recipesData.slice(0, 12));
         }
@@ -56,7 +56,7 @@ function Recipes({ mealOrDrink }: RecipesProps) {
 
   useEffect(() => {
     const getCategorys = async () => {
-      const categorysData = await fetchApi(`http://localhost:3001/${mealOrDrink}/all/categories`);
+      const categorysData = await fetchCategoriesList(mealOrDrink);
       if (categorysData) {
         setCategorys(categorysData.slice(0, 5));
       }
@@ -69,7 +69,7 @@ function Recipes({ mealOrDrink }: RecipesProps) {
     getCategorys();
   }, [mealOrDrink]);
 
-  const isMealOrDrink = (mealOrDrink === 'meals') || (mealOrDrink === 'drinks');
+  const isMealOrDrink = (mealOrDrink === 'meal') || (mealOrDrink === 'drink');
   const hasRecipeID = (!recipeID || recipeInProgress);
 
   if (recipes.length === 0 || categorys.length === 0) return <p>Loading...</p>;

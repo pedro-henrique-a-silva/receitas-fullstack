@@ -4,8 +4,17 @@ export const FooterWrapper = styled('footer')`
   display: flex;
   justify-content: space-between;
   bottom: 0;
-  height: 10%;
+  
   position: fixed;
   width: 100%;
-  padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    height: 10%;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 6rem;
+    height: 11%;
+  }
 `;

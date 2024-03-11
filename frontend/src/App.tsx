@@ -13,24 +13,24 @@ function App() {
     <Routes>
       <Route path="/" element={ <Login /> } />
 
-      <Route path="/meals" element={ <Recipes mealOrDrink="meals" /> } />
-      <Route path="/drinks" element={ <Recipes mealOrDrink="drinks" /> } />
-      <Route path="/meals/:recipeID" element={ <RecipeDetails mealOrDrink="meals" /> } />
+      <Route path="/meal" element={ <Recipes mealOrDrink="meal" /> } />
+      <Route path="/drink" element={ <Recipes mealOrDrink="drink" /> } />
+      <Route path="/meal/:recipeID" element={ <RecipeDetails mealOrDrink="meal" /> } />
       <Route
-        path="/meals/:recipeID/in-progress"
-        element={ <RecipeInProgress mealOrDrink="meals" /> }
+        path="/meal/:recipeID/progress"
+        element={ <RecipeInProgress mealOrDrink="meal" /> }
       />
       <Route
-        path="/drinks/:recipeID"
-        element={ <RecipeDetails mealOrDrink="drinks" /> }
+        path="/drink/:recipeID"
+        element={ <RecipeDetails mealOrDrink="drink" /> }
       />
       <Route
-        path="/drinks/:recipeID/in-progress"
-        element={ <RecipeInProgress mealOrDrink="drinks" /> }
+        path="/drink/:recipeID/progress"
+        element={ <RecipeInProgress mealOrDrink="drink" /> }
       />
       <Route path="/profile" element={ <Profile /> } />
-      <Route path="/done-recipes" element={ <DoneRecipes /> } />
-      <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
+      <Route path="/done" element={ <DoneRecipes /> } />
+      <Route path="/favorite" element={ <FavoriteRecipes /> } />
     </Routes>
   );
 }

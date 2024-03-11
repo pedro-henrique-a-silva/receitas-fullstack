@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import style from './Message.module.css';
 
 type MessageProps = {
   toggleIsVisible: () => void;
@@ -19,7 +18,7 @@ function Message(props: MessageProps) {
   }, [toggleIsVisible]);
 
   return (
-    <div className={ style.messageLinkCopied }>
+    <div>
       <p>Link copied!</p>
     </div>
   );

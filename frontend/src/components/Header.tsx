@@ -28,7 +28,7 @@ function Header(props: HeaderProp) {
       return title;
     }
 
-    return title === 'Meals' ? 'Comidas' : 'Bebidas'
+    return title === 'Meal' ? 'Comidas' : 'Bebidas'
   }
  
   return (

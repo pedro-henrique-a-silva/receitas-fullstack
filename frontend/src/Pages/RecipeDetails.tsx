@@ -11,14 +11,14 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { ButtonFixed, RecipeVideo } from './RecipeDetailsStyled';
 import {
-  isFavorite,
   isInProgress,
 } from '../utils/utilsLocalStorage';
-import { fetchDetails } from '../utils/fetchAPi';
 import RecipeCover from '../components/RecipeCover';
+import FetchAPI from '../hooks/FetchAPI';
+import { Ingredients } from '../types';
 
 type RecipeDetailsProps = {
-  mealOrDrink: 'meals' | 'drinks';
+  mealOrDrink: 'meal' | 'drink';
 };
 
 function RecipeDetails(props: RecipeDetailsProps) {
@@ -30,58 +30,19 @@ function RecipeDetails(props: RecipeDetailsProps) {
 
   const [isVisible, setIsVisible] = useState(false);
   const [favorite, setFavorite] = useState(false);
-
-  const getIngredients = () => Object
-    .entries(recipeDetails)
-    .filter(([key, value]) => key.includes('strIngredient') && value)
-    .map((values, index) => (`${values[1]} ${recipeDetails[`strMeasure${index + 1}`]
-    || ''}`));
+  const { fetchDetails, fetchUpdateFavorites } = FetchAPI();
 
   const toggleIsVisible = () => {
     setIsVisible(!isVisible);
   };
 
   const handleClickStartRecipe = () => {
-    navigate(`/${mealOrDrink}/${recipeID}/in-progress`);
+    navigate(`/${mealOrDrink}/${recipeID}/progress`);
   };
 
-  const handleFavoriteClick = (recipeData: any) => {
-    const id = recipeData.id;
-    const type = mealOrDrink.replace('s', '');
-    const nationality = recipeData.strArea || '';
-    const category = recipeData.strCategory;
-    const alcoholicOrNot = recipeData.strAlcoholic || '';
-    const name = recipeData.strName;
-    const image = recipeData.strThumb;
-
-    const newFavoriteRecipe = {
-      id,
-      type,
-      nationality,
-      category,
-      alcoholicOrNot,
-      name,
-      image,
-    };
-
-    const recipesLocalStorage = JSON
-      .parse(localStorage.getItem('favoriteRecipes') as string)
-    || [];
-
-    if (isFavorite(recipeID)) {
-      const newFavoriteRecipes = recipesLocalStorage
-        .filter((recipe: any) => recipe.id !== recipeID);
-
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify(newFavoriteRecipes));
-
-      setFavorite(false);
-    } else {
-      localStorage.setItem('favoriteRecipes', JSON
-        .stringify([...recipesLocalStorage, newFavoriteRecipe]));
-
-      setFavorite(true);
-    }
+  const handleFavoriteClick = async () => {
+    const { message } = await fetchUpdateFavorites(recipeDetails.id)
+    setFavorite(message)
   };
 
   const handleShareClick = () => {
@@ -96,12 +57,10 @@ function RecipeDetails(props: RecipeDetailsProps) {
       const details = await fetchDetails(mealOrDrink, recipeID);
       if (details) {
         setRecipeDetails(details);
+        setFavorite(details.favorite);
       }
     };
     getDetails();
-    const fav = isFavorite(recipeID);
-    console.log(fav);
-    setFavorite(fav);
   }, [recipeID, mealOrDrink]);
 
   const inProgress = isInProgress(mealOrDrink, recipeID);
@@ -111,6 +70,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
   return (
     <>
       {(isVisible) && <Message toggleIsVisible={ toggleIsVisible } />}
+      <Container maxWidth="sm">
       <RecipeCover
         mealOrDrink={ mealOrDrink }
         favorite={ favorite }
@@ -118,10 +78,11 @@ function RecipeDetails(props: RecipeDetailsProps) {
         handleFavoriteClick={ handleFavoriteClick }
         recipeDetails={ recipeDetails }
       />
-
-    "<h3>Ingredients</h3>
+      </Container>
+    <Container maxWidth="sm">
+    <h3>Ingredients</h3>
     <List >
-      {getIngredients().map((ingredient, index) => (
+      {recipeDetails.ingredients.map((item: Ingredients, index: number) => (
           <ListItem
             disablePadding
             key={ index }
@@ -132,19 +93,22 @@ function RecipeDetails(props: RecipeDetailsProps) {
                 <Dot size={32} color="#3c3939" weight="fill" />
               </ListItemIcon>
               <ListItemText
-                primary={ingredient as string}
+                primary={`${item.ingredient} ${item.measure}`}
               />
             </ListItemButton>
           </ListItem>
         
         ))}
       </List>
+      </Container>
       
-      <h3>Instructions</h3>
       <Container maxWidth="sm">
+      <h3>Instructions</h3>
         <p data-testid="instructions">{recipeDetails?.strInstructions}</p>
       </Container>
-      {mealOrDrink === 'meals' && (
+      <Container maxWidth="sm">
+      
+      {mealOrDrink === 'meal' && (
         <RecipeVideo>
           <iframe
             title={ recipeDetails?.strName }
@@ -156,6 +120,7 @@ function RecipeDetails(props: RecipeDetailsProps) {
 
       )}
       <Carousel mealOrDrink={ mealOrDrink } />
+      </Container>
       <ButtonFixed
         type="button"
         onClick={ () => handleClickStartRecipe() }
