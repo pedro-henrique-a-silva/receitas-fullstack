@@ -1,5 +1,12 @@
 # App de Receitas Fullstack
 
+## Índice
+
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Rodando a Aplicação](#rodando-a-aplicação)
+- [Endpoints Disponíveis](#endpoints-disponíveis)
+
+
 Este repositório contém a implementação de uma aplicação fullstack de receitas, com duas versões de backend utilizando Express e NestJS, respectivamente. O projeto também inclui uma aplicação frontend que consome os serviços dos backends para exibir receitas de comidas e bebidas.
 
 ## Funcionalidades
