@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function categorySeed() {
-  await prisma.categorie.createMany({
+  await prisma.category.createMany({
     data: [
       { id: 1, categoryName: 'Beef', categoryType: 'meal' },
       { id: 2, categoryName: 'Breakfast', categoryType: 'meal' },

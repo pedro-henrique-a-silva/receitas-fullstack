@@ -1,4 +1,4 @@
-import { Categorie, Recipe } from '@prisma/client';
+import { Category, Recipe } from '@prisma/client';
 import { ID } from 'src/Interfaces';
 
 export abstract class RecipeRepository {
@@ -6,7 +6,7 @@ export abstract class RecipeRepository {
   abstract findById(id: ID, recipeType: string): Promise<Recipe | null>;
   abstract findAllCategories(
     recipeType: string,
-  ): Promise<Pick<Categorie, 'categoryName'>[]>;
+  ): Promise<Pick<Category, 'categoryName'>[]>;
   abstract findByCategory(
     recipeType: string,
     categoryName: string,

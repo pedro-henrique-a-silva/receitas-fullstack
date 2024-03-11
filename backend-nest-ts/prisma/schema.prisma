@@ -44,7 +44,7 @@ model Ingredient {
 model Recipe {
   id              Int               @id @default(autoincrement())
   strName         String
-  category        Category          @relation(fields: [categorieId], references: [id])
+  category        Category          @relation(fields: [categoryId], references: [id])
   categoryId     Int
   recipeType      String
   strAlcoholic    String?
