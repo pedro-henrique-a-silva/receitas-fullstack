@@ -15,8 +15,8 @@ services:
     ports:
       - 3000:3000
   backend-express:
-    build: ./backend-sequelize-ts
-    container_name: api-receita-sequelize
+    build: ./backend-express-ts
+    container_name: api-receita-express
     tty: true
     stdin_open: true
     command: run dev
