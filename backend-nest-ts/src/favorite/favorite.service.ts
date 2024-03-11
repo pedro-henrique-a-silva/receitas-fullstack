@@ -19,11 +19,13 @@ export class FavoriteService {
     recipeId: number,
     userId: number,
     username: string,
-  ): Promise<void> {
+  ): Promise<{ favorite: boolean }> {
     const user = await this.userService.findByUsername(username);
 
     if (!user || user.id !== userId) throw new UnauthorizedException();
 
-    await this.favoriteRepository.updateFavorites(recipeId, userId);
+    const favorite = await this.favoriteRepository.updateFavorites(recipeId, userId);
+
+    return { favorite };
   }
 }

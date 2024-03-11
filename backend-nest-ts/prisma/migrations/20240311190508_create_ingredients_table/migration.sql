@@ -1,6 +1,12 @@
 /*
   Warnings:
 
+  - The primary key for the `dones` table will be changed. If it partially fails, the table could be left without primary key constraint.
+  - You are about to drop the column `recipeId` on the `dones` table. All the data in the column will be lost.
+  - You are about to drop the column `userId` on the `dones` table. All the data in the column will be lost.
+  - The primary key for the `favorite` table will be changed. If it partially fails, the table could be left without primary key constraint.
+  - You are about to drop the column `recipeId` on the `favorite` table. All the data in the column will be lost.
+  - You are about to drop the column `userId` on the `favorite` table. All the data in the column will be lost.
   - You are about to drop the column `categorieId` on the `recipes` table. All the data in the column will be lost.
   - You are about to drop the column `str_ingredient1` on the `recipes` table. All the data in the column will be lost.
   - You are about to drop the column `str_ingredient10` on the `recipes` table. All the data in the column will be lost.
@@ -42,11 +48,43 @@
   - You are about to drop the column `str_measure7` on the `recipes` table. All the data in the column will be lost.
   - You are about to drop the column `str_measure8` on the `recipes` table. All the data in the column will be lost.
   - You are about to drop the column `str_measure9` on the `recipes` table. All the data in the column will be lost.
+  - Added the required column `recipe_id` to the `dones` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `user_id` to the `dones` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `recipe_id` to the `favorite` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `user_id` to the `favorite` table without a default value. This is not possible if the table is not empty.
   - Added the required column `categoryId` to the `recipes` table without a default value. This is not possible if the table is not empty.
 
 */
 -- DropForeignKey
+ALTER TABLE `dones` DROP FOREIGN KEY `dones_recipeId_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `dones` DROP FOREIGN KEY `dones_userId_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `favorite` DROP FOREIGN KEY `favorite_recipeId_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `favorite` DROP FOREIGN KEY `favorite_userId_fkey`;
+
+-- DropForeignKey
 ALTER TABLE `recipes` DROP FOREIGN KEY `recipes_categorieId_fkey`;
+
+-- AlterTable
+ALTER TABLE `dones` DROP PRIMARY KEY,
+    DROP COLUMN `recipeId`,
+    DROP COLUMN `userId`,
+    ADD COLUMN `recipe_id` INTEGER NOT NULL,
+    ADD COLUMN `user_id` INTEGER NOT NULL,
+    ADD PRIMARY KEY (`user_id`, `recipe_id`);
+
+-- AlterTable
+ALTER TABLE `favorite` DROP PRIMARY KEY,
+    DROP COLUMN `recipeId`,
+    DROP COLUMN `userId`,
+    ADD COLUMN `recipe_id` INTEGER NOT NULL,
+    ADD COLUMN `user_id` INTEGER NOT NULL,
+    ADD PRIMARY KEY (`user_id`, `recipe_id`);
 
 -- AlterTable
 ALTER TABLE `recipes` DROP COLUMN `categorieId`,
@@ -90,7 +128,12 @@ ALTER TABLE `recipes` DROP COLUMN `categorieId`,
     DROP COLUMN `str_measure7`,
     DROP COLUMN `str_measure8`,
     DROP COLUMN `str_measure9`,
-    ADD COLUMN `categoryId` INTEGER NOT NULL;
+    ADD COLUMN `categoryId` INTEGER NOT NULL,
+    MODIFY `strAlcoholic` VARCHAR(191) NULL,
+    MODIFY `strGlass` VARCHAR(191) NULL,
+    MODIFY `strArea` VARCHAR(191) NULL,
+    MODIFY `strTags` VARCHAR(191) NULL,
+    MODIFY `strYoutube` VARCHAR(191) NULL;
 
 -- CreateTable
 CREATE TABLE `ingredients` (
@@ -108,3 +151,15 @@ ALTER TABLE `ingredients` ADD CONSTRAINT `ingredients_recipe_id_fkey` FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE `recipes` ADD CONSTRAINT `recipes_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `favorite` ADD CONSTRAINT `favorite_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `favorite` ADD CONSTRAINT `favorite_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `dones` ADD CONSTRAINT `dones_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `dones` ADD CONSTRAINT `dones_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

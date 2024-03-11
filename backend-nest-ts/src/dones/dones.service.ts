@@ -19,11 +19,13 @@ export class DonesService {
     recipeId: number,
     userId: number,
     username: string,
-  ): Promise<void> {
+  ): Promise<{ dones: boolean }> {
     const user = await this.userService.findByUsername(username);
 
     if (!user || user.id !== userId) throw new UnauthorizedException();
 
-    await this.doneRepository.updateDones(recipeId, userId);
+    const dones = await this.doneRepository.updateDones(recipeId, userId);
+
+    return { dones }
   }
 }

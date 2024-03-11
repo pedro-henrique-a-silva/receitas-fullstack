@@ -6,36 +6,43 @@ import {
   Param,
   Post,
   Req,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { DonesService } from './dones.service';
 import { JWTGuard } from '../common/jwt/jwt.guard';
-import { RequestWithUserDataJWT } from 'src/Interfaces';
+import { RequestWithUser } from 'src/Interfaces';
+import { IUser } from 'src/users/interfaces/user.interface';
 
 @Controller('dones')
 export class DonesController {
   constructor(private doneService: DonesService) {}
 
   @UseGuards(JWTGuard)
-  @Get(':id')
-  async getDones(@Param('id') id: string) {
-    const favorites = await this.doneService.getDones(Number(id));
-    return favorites;
+  @Get('')
+  async getDones(@Req() req: RequestWithUser) {
+    const { user } = req
+    console.log(user)
+    const dones = await this.doneService.getDones(Number(user?.id));
+    return dones;
   }
 
   @UseGuards(JWTGuard)
   @HttpCode(200)
-  @Post(':id')
+  @Post('')
   async updateDones(
     @Body('recipeId') recipeId: string,
     @Param('id') userId: string,
     @Req()
-    req: RequestWithUserDataJWT,
+    req: RequestWithUser,
   ) {
-    await this.doneService.updateDones(
+    const { user } = req
+    const dones = await this.doneService.updateDones(
       Number(recipeId),
-      Number(userId),
-      req.user.username,
+      Number(user?.id),
+      user?.username  as string,
     );
+
+    return dones
   }
 }

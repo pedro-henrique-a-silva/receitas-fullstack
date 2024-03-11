@@ -15,8 +15,8 @@ model User {
   name            String            @db.VarChar(100)
   username        String            @db.VarChar(100)
   password        String            @db.VarChar(100)
-  FavoriteRecipes FavoriteRecipes[]
-  DoneRecipes     DoneRecipes[]
+  favoriteRecipes FavoriteRecipes[]
+  doneRecipes     DoneRecipes[]
 
   @@map("users")
 }
@@ -54,9 +54,9 @@ model Recipe {
   strThumb        String
   strTags         String?
   strYoutube      String?
-  FavoriteRecipes FavoriteRecipes[]
-  DoneRecipes     DoneRecipes[]
-  Ingredients     Ingredient[]
+  favoriteRecipes FavoriteRecipes[]
+  doneRecipes     DoneRecipes[]
+  ingredients     Ingredient[]
 
   @@map("recipes")
 }

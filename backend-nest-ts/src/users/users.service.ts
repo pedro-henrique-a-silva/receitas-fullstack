@@ -15,6 +15,6 @@ export class UsersService {
   async create(signUpData: Prisma.UserCreateInput) {
     const created = await this.userRepository.create(signUpData);
 
-    return created;
+    return {name: created.name, username: created.username};
   }
 }

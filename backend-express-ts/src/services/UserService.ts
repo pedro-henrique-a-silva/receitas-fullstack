@@ -37,7 +37,7 @@ export default class UserService {
     return { status: 'SUCCESSFUL', data: { token } };
   }
 
-  async create(data: CreateUser): Promise<ServiceResponse<IUser>> {
+  async create(data: CreateUser): Promise<ServiceResponse<{name: string, username: string}>> {
     const { username } = data;
     const user = await this.userModel.findByUsername(username);
 
@@ -49,6 +49,9 @@ export default class UserService {
       password: await this.hashService.hash(data.password),
     });
 
-    return { status: 'CREATED', data: userCreated };
+    return { status: 'CREATED', data: {
+      name: userCreated.name, 
+      username: userCreated.username
+    } };
   }
 }

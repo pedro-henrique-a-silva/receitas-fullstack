@@ -1,6 +1,7 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
 import { JWTGuard } from '../common/jwt/jwt.guard';
+import { RequestWithUser } from 'src/Interfaces';
 
 @Controller('')
 export class RecipesController {
@@ -41,8 +42,10 @@ export class RecipesController {
   async getById(
     @Param('recipeType') recipeType: string,
     @Param('id') id: string,
+    @Req() req: RequestWithUser,
   ) {
-    const recipe = await this.recipesService.findById(Number(id), recipeType);
+    const { user } = req;
+    const recipe = await this.recipesService.findById(Number(id), Number(user?.id));
     return recipe;
   }
 }

@@ -28,7 +28,7 @@ export class AuthService {
     if (!isPasswordMatch) throw new BadRequestException();
 
     const token = await this.jwtService.signAsync({
-      name: user.name,
+      id: user.id,
       username: user.username,
     });
 

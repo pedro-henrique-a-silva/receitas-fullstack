@@ -14,5 +14,8 @@ import PrismaFavoriteRepository from './favorite.repository';
     { provide: FavoriteRepository, useClass: PrismaFavoriteRepository },
   ],
   controllers: [FavoriteController],
+  exports: [
+    { provide: FavoriteRepository, useClass: PrismaFavoriteRepository },
+  ]
 })
 export class FavoriteModule {}

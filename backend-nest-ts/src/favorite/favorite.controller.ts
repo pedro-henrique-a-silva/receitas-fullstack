@@ -6,36 +6,42 @@ import {
   Param,
   Post,
   Req,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { JWTGuard } from '../common/jwt/jwt.guard';
-import { RequestWithUserDataJWT } from '../Interfaces';
+import { RequestWithUser } from '../Interfaces';
+import { IUserCreateDTO } from 'src/auth/interfaces/auth.interface';
+import { IUser } from 'src/users/interfaces/user.interface';
 
 @Controller('favorites')
 export class FavoriteController {
   constructor(private favoriteService: FavoriteService) {}
 
   @UseGuards(JWTGuard)
-  @Get(':id')
-  async getFavorites(@Param('id') id: string) {
-    const favorites = await this.favoriteService.getFavorites(Number(id));
+  @Get('')
+  async getFavorites(@Request() req: RequestWithUser) {
+    const { user } = req
+    console.log(user)
+    const favorites = await this.favoriteService.getFavorites(Number(user?.id));
     return favorites;
   }
 
   @UseGuards(JWTGuard)
   @HttpCode(200)
-  @Post(':id')
+  @Post('')
   async updateFavorite(
     @Body('recipeId') recipeId: string,
-    @Param('id') userId: string,
-    @Req()
-    req: RequestWithUserDataJWT,
+    @Req() req: RequestWithUser,
   ) {
-    await this.favoriteService.updateFavorites(
+    const { user } = req
+    const favorite = await this.favoriteService.updateFavorites(
       Number(recipeId),
-      Number(userId),
-      req.user.username,
+      Number(user?.id),
+      user?.username as string,
     );
+
+    return favorite
   }
 }

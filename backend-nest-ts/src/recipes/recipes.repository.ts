@@ -2,25 +2,43 @@ import { RecipeRepository } from './interface/RecipesRepository';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Category, Recipe } from '@prisma/client';
+import { IRecipeWithCategoryFromModel, IRecipeWithCategoryName } from './interface/recipes.interface';
 
 @Injectable()
 export class PrismaRecipesRepository implements RecipeRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(type: string) {
-    const recipes = this.prisma.recipe.findMany({
+  async findAll(type: string): Promise<IRecipeWithCategoryName[]> {
+    const recipes = await this.prisma.recipe.findMany({
+      include: {
+        category: {select: { categoryName: true } },
+        ingredients: { select: { ingredient: true, measure: true }, orderBy: [{ order: 'asc' }] },
+      },
       where: { recipeType: type },
+      orderBy: [{ strName: 'asc' }],
     });
 
-    return recipes;
+    return recipes.map(PrismaRecipesRepository.responseRecipeList);
   }
 
-  async findById(id: number, type: string) {
+  async findById(id: number): Promise<IRecipeWithCategoryName | null> {
     const recipe = await this.prisma.recipe.findUnique({
-      where: { id: id, recipeType: type },
+      include: {
+        category: { select: { categoryName: true } },
+        ingredients: { select: { ingredient: true, measure: true }, orderBy: [{ order: 'asc' }] },
+      },
+      where: { id },
     });
 
-    return recipe;
+    if (recipe) {
+      const { categoryId, category, ...restRecipe } = recipe;
+      return {
+        ...restRecipe,
+        categoryName: category.categoryName,
+      };
+    }
+
+    return null;
   }
 
   async findAllCategories(
@@ -37,17 +55,23 @@ export class PrismaRecipesRepository implements RecipeRepository {
   async findByCategory(
     recipeType: string,
     categoryName: string,
-  ): Promise<Recipe[]> {
+  ): Promise<IRecipeWithCategoryName[]> {
     const recipesByCategory = await this.prisma.recipe.findMany({
       where: { recipeType, category: { categoryName } },
       orderBy: [{ strName: 'asc' }],
-      include: {
-        category: {
-          select: { categoryName: true },
-        },
+      include: { category: { select: { categoryName: true } },
       },
     });
+    return recipesByCategory.map(PrismaRecipesRepository.responseRecipeList);
+  }
 
-    return recipesByCategory;
+
+  static responseRecipeList(recipe: IRecipeWithCategoryFromModel) {
+    const { categoryId, category, ...restRecipe } = recipe;
+
+    return {
+      ...restRecipe,
+      categoryName: category.categoryName,
+    };
   }
 }

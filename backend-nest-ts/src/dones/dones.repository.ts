@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import DonesRepository from './interfaces/DonesRepository';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AllUserDones } from './interfaces/dones.interface';
+import { AllUserDones, DonesFromDB } from './interfaces/dones.interface';
+import { RecipeList } from 'src/favorite/interface/favorite.interface';
+import getDonesQueries from './queries/getDonesQueries';
 
 @Injectable()
 export default class PrismaDonesRepository implements DonesRepository {
   constructor(private prisma: PrismaService) {}
 
   async getDones(id: number): Promise<AllUserDones | null> {
-    const dones = await this.prisma.user.findUnique({
-      select: {
-        name: true,
-        username: true,
-        DoneRecipes: {
-          select: { recipe: true },
-        },
-      },
-      where: { id },
-    });
+    const dones = await this.prisma.user.findUnique(getDonesQueries(id));
+    const { doneRecipes, ...restdones } = dones as never as DonesFromDB;
 
-    return dones;
+    const donesRecipesList = doneRecipes
+      .map((recipe: RecipeList) => {
+        const { categoryId, category, ...restRecipe } = recipe.recipe;
+        return { ...restRecipe, categoryName: category.categoryName };
+      });
+
+    return { ...restdones, doneRecipes: donesRecipesList };
   }
 
-  async updateDones(recipeId: number, userId: number): Promise<void> {
+  async updateDones(recipeId: number, userId: number): Promise<boolean> {
     const dones = await this.prisma.doneRecipes.findFirst({
       where: { recipeId, userId },
     });
@@ -36,7 +36,7 @@ export default class PrismaDonesRepository implements DonesRepository {
           },
         },
       });
-      return;
+      return false;
     }
 
     await this.prisma.doneRecipes.create({
@@ -46,6 +46,6 @@ export default class PrismaDonesRepository implements DonesRepository {
       },
     });
 
-    return;
+    return true;
   }
 }

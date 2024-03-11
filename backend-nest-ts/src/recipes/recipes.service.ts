@@ -1,23 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category, Recipe } from '@prisma/client';
 import { RecipeRepository } from './interface/RecipesRepository';
+import { IRecipeWithCategoryName, IRecipeWithFavorite } from './interface/recipes.interface';
+import FavoriteRepository from 'src/favorite/interface/FavoriteRepository';
 
 @Injectable()
 export class RecipesService {
-  constructor(private recipesRepository: RecipeRepository) {}
+  constructor(
+    private recipesRepository: RecipeRepository,
+    private favoriteRepository: FavoriteRepository,
+  ) {}
 
-  async findAll(recipeType: string): Promise<Recipe[]> {
+  async findAll(recipeType: string): Promise<IRecipeWithCategoryName[]> {
     const recipes = await this.recipesRepository.findAll(recipeType);
 
     return recipes;
   }
 
-  async findById(id: number, recipeType: string): Promise<Recipe> {
-    const recipe = await this.recipesRepository.findById(id, recipeType);
+  async findById(id: number, userId: number): Promise<IRecipeWithFavorite | null> {
+    const recipe = await this.recipesRepository.findById(id);
 
     if (!recipe) throw new NotFoundException();
 
-    return recipe;
+    const favorite = await this.favoriteRepository.getOneFavorite(recipe.id, userId);
+
+    return { ...recipe, favorite: Boolean(favorite) }
   }
 
   async findAllCategories(
@@ -32,7 +39,7 @@ export class RecipesService {
   async findByCategory(
     recipeType: string,
     categoryName: string,
-  ): Promise<Recipe[]> {
+  ): Promise<IRecipeWithCategoryName[]> {
     const recipesByCategory = await this.recipesRepository.findByCategory(
       recipeType,
       categoryName,
