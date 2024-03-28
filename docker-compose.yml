@@ -23,8 +23,8 @@ services:
     restart: always
     working_dir: /app
     volumes:
-      - ./backend-sequelize-ts/src:/app/src
-      - ./backend-sequelize-ts/tests:/app/tests
+      - ./backend-express-ts/src:/app/src
+      - ./backend-express-ts/tests:/app/tests
     depends_on:
       database:
         condition: service_healthy
