@@ -1,3 +1,4 @@
+import { ServiceResponseError, ServiceResponseSuccess } from '../../src/interfaces/ServiceResponse';
 import BCryptHashService from '../../src/utils/Hash';
 
 const hashService = new BCryptHashService()
@@ -10,6 +11,10 @@ const userSequelizeFromDB = {
   // password: '123456'
 }
 
+const userLoginServiceSuccess: ServiceResponseSuccess<{ token: string; }> = { status: 'SUCCESSFUL', data: { token: 'token' } }
+
+const userLoginServiceInvalidData: ServiceResponseError = { status: 'INVALID_DATA', data: { message: 'Dados incorretos' } }
+
 const userSequelizeCreate = { 
   name: "user01" , 
   username: 'email@email.com', 
@@ -19,5 +24,7 @@ const userSequelizeCreate = {
 
 export default {
   userSequelizeFromDB,
+  userLoginServiceSuccess,
+  userLoginServiceInvalidData,
   userSequelizeCreate
 }
