@@ -3,10 +3,10 @@ import { ICategory } from '../interfaces/category/ICategory';
 import { IRecipe, IRecipeWithFavorite } from '../interfaces/recipe/IRecipe';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
 import IFavoriteModel from '../interfaces/favorite/IFavoriteModel';
-// import RecipeModel from '../model/sequelize/RecipeModel';
-import RecipeModel from '../model/prisma/RecipeModel';
-// import FavoriteModel from '../model/sequelize/FavoriteModel';
-import FavoriteModel from '../model/prisma/FavoriteModel';
+import RecipeModel from '../model/sequelize/RecipeModel';
+// import RecipeModel from '../model/prisma/RecipeModel';
+import FavoriteModel from '../model/sequelize/FavoriteModel';
+// import FavoriteModel from '../model/prisma/FavoriteModel';
 
 export default class RecipesService {
   constructor(

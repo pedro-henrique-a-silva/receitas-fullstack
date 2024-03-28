@@ -1,11 +1,11 @@
-import { CreateUser, IUser } from '../interfaces/user/IUser';
+import { CreateUser } from '../interfaces/user/IUser';
 import IUserModel from '../interfaces/user/IUserModel';
 import { ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
 import HashService from '../interfaces/IHash';
 import BCryptHashService from '../utils/Hash';
-// import UserModel from '../model/sequelize/UserModel';
-import UserModel from '../model/prisma/UserModel';
+import UserModel from '../model/sequelize/UserModel';
+// import UserModel from '../model/prisma/UserModel';
 
 export default class UserService {
   private msgInvalidData = 'Dados incorretos';
@@ -37,7 +37,7 @@ export default class UserService {
     return { status: 'SUCCESSFUL', data: { token } };
   }
 
-  async create(data: CreateUser): Promise<ServiceResponse<{name: string, username: string}>> {
+  async create(data: CreateUser): Promise<ServiceResponse<{ name: string, username: string }>> {
     const { username } = data;
     const user = await this.userModel.findByUsername(username);
 
@@ -49,9 +49,10 @@ export default class UserService {
       password: await this.hashService.hash(data.password),
     });
 
-    return { status: 'CREATED', data: {
-      name: userCreated.name, 
-      username: userCreated.username
-    } };
+    return { status: 'CREATED',
+      data: {
+        name: userCreated.name,
+        username: userCreated.username,
+      } };
   }
 }
